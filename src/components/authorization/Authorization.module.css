@@ -1,0 +1,13 @@
+import React from 'react';
+
+export const Authorization = () => {
+    return (
+        <form className='form'>
+            <h1>Authorization</h1>
+            <input name='email' type='text' placeholder='Enter your email...'/>
+            <input name='password' type='password' placeholder='Enter your password...'/>
+            <button type="submit">Log in</button>
+        </form>
+    );
+};
+
