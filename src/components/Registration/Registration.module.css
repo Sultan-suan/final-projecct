@@ -1,0 +1,12 @@
+.button {
+    background-color: slateblue;
+}
+
+.wrapper {
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    gap: 6px;
+    border: 1px solid gray;
+    padding: 16px;
+}
