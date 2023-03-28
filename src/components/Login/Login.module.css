@@ -1,0 +1,48 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 413px;
+    height: 600px;
+    background: #F9F9FE;
+    border-radius: 8px;
+}
+
+.form h1{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: #2D2E46;
+}
+
+.form button {
+    color: white;
+    width: 150px;
+    height: 25px;
+    background: #21268F;
+    border-radius: 30px;
+}
+
+.wrapper {
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    gap: 6px;
+    border: 1px solid gray;
+    padding: 16px;
+}
+
+.form a {
+    width: 101px;
+    height: 17px;
+    font-family: 'SF UI Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #2D2E46;
+    text-decoration: none;
+}
