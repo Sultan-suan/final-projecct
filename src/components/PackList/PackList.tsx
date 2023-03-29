@@ -1,11 +1,10 @@
 import React from 'react';
 
-
 type PackListPropsType = {
     isAuth: boolean
 }
 
-const PackList = (props: PackListPropsType) => {
+export const PackList = (props: PackListPropsType) => {
     return <div>
         {
             props.isAuth
@@ -15,4 +14,3 @@ const PackList = (props: PackListPropsType) => {
     </div>
 }
 
-export default PackList;

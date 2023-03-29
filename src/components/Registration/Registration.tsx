@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import s from './Registration.module.css';
 import axios from 'axios';
 
-
-const Registration = () => {
+export const Registration = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -64,4 +63,3 @@ const Registration = () => {
     );
 };
 
-export default Registration;
