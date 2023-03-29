@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import s from './Login.module.css';
+import {NavLink} from "react-router-dom";
 
 type LoginPropsType = {
     isAuth: boolean
@@ -26,8 +27,8 @@ export const Login = (props: LoginPropsType) => {
 
     const passwordHandler = (e: any) => {
         setPassword(e.target.value)
-        if (e.target.value.length < 5 || e.target.value.length > 10) {
-            setPasswordError('Пароль не должен быть меньше 5 и длиннее 10')
+        if (e.target.value.length < 5) {
+            setPasswordError('Пароль не должен быть меньше 5-ти символов')
             if (!e.target.value) {
                 setPasswordError('Пароль не может быть пустым')
             }
@@ -49,8 +50,9 @@ export const Login = (props: LoginPropsType) => {
 
     const login = (event: any) => {
         event.preventDefault();
-            props.setIsAuth(true)
-            console.log(props.isAuth)
+        props.setIsAuth(true)
+        console.log(props.isAuth)
+
     }
 
     // useEffect(() => {
@@ -82,7 +84,7 @@ export const Login = (props: LoginPropsType) => {
                    name='password'
                    type='password'
                    placeholder='Enter your password...'/>
-            <a href={"about"}>Forgot password</a>
+            <NavLink to={"registration"}>Forgot password</NavLink>
             <button type="submit">Log in</button>
         </form>
     );
