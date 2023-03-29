@@ -9,8 +9,8 @@ const PackList = (props: PackListPropsType) => {
     return <div>
         {
             props.isAuth
-                ? <div>true</div>
-                : <div>false</div>
+                ? <div>Авторизован</div>
+                : <div>Не авторизован</div>
         }
     </div>
 }

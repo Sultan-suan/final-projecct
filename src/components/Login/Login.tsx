@@ -25,6 +25,8 @@ export const Login = (props: LoginPropsType) => {
         console.log(props.isAuth)
     }
 
+
+
     return (
         <form className={s.form} onSubmit={login}>
             <h1>Authorization</h1>

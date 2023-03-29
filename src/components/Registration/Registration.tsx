@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import s from './Registration.module.css';
 
 const Registration = () => {
