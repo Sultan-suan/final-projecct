@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import s from './Registration.module.css';
+import axios from 'axios';
+
 
 const Registration = () => {
     const [email, setEmail] = useState('');
@@ -18,6 +20,14 @@ const Registration = () => {
         console.log(`Email: ${email}, Password: ${password}`);
     };
 
+    const fren = () => {
+        const response = axios.post("https://cards-nya-back-production.up.railway.app/2.0/auth/register",
+            {
+                email,
+                password
+            })
+        console.log(response)
+    }
 
     return (
         <div className={s.wrapper}>
@@ -33,6 +43,7 @@ const Registration = () => {
                         value={email}
                         onChange={handleEmailChange}
                         required
+
                     />
                 </div>
                 <div>
@@ -45,7 +56,7 @@ const Registration = () => {
                         required
                     />
                 </div>
-                <button type="submit" className={s.button}>
+                <button onClick={fren} type="submit" className={s.button}>
                     Register now
                 </button>
             </form>
