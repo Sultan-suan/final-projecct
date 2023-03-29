@@ -16,8 +16,8 @@ const Registration = () => {
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         console.log(`Email: ${email}, Password: ${password}`);
-
     };
+
 
     return (
         <div className={s.wrapper}>

@@ -1,13 +1,18 @@
 import React from 'react';
 
-const PackList = () => {
-    return (
-        <div>
-            <h1>
-                Che to budet zdes
-            </h1>
-        </div>
-    );
-};
+
+type PackListPropsType = {
+    isAuth: boolean
+}
+
+const PackList = (props: PackListPropsType) => {
+    return <div>
+        {
+            props.isAuth
+                ? <div>true</div>
+                : <div>false</div>
+        }
+    </div>
+}
 
 export default PackList;
