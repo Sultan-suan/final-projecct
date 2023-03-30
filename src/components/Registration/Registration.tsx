@@ -31,12 +31,15 @@ export const Registration = () => {
 
     return (
             <form onSubmit={handleSubmit} className={s.form}>
-                <h2>Registration</h2>
+                <h1>IT-KARATE</h1>
+
+                <h1>Registration</h1>
+
                 <div>
                     <TextField
                         type="email"
                         id="email"
-                        label="Email"
+                        label="E-mail"
                         variant="standard"
                         value={email}
                         onChange={handleEmailChange}
