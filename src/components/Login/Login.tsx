@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import s from './Login.module.css';
 import {NavLink} from "react-router-dom";
 import axios from 'axios';
+import {TextField} from "@mui/material";
 
 type LoginPropsType = {
     isAuth: boolean
@@ -43,26 +44,29 @@ export const Login = (props: LoginPropsType) => {
     return (
         <form className={s.form} onSubmit={login}>
 
-            <h1>Authorization</h1>
+            <h1>IT-KARATE</h1>
 
             <h1>Sign In</h1>
 
             <div>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
+                <TextField
+                    id="standard-basic"
+                    label="E-mail"
+                    variant="standard"
                     value={email}
+                    type="email"
                     onChange={handleEmailChange}
                     required
                 />
             </div>
 
             <div>
-                <label htmlFor="password">Password:</label>
-                <input
+
+                <TextField
+                    id="standard-basic"
+                    label="Password"
+                    variant="standard"
                     type="password"
-                    id="password"
                     value={password}
                     onChange={handlePasswordChange}
                     required
@@ -71,7 +75,7 @@ export const Login = (props: LoginPropsType) => {
 
             {error && <div style={{color: "red"}}>Вы ввели некорректные данные</div>}
 
-            <NavLink to={"/posts"}>Forgot password</NavLink>
+            {/*<NavLink className={s.gap} to={"/posts"}>Forgot password</NavLink>*/}
 
             <button onClick={() => frens()} type="submit">Sign in</button>
 

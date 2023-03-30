@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import s from './Registration.module.css';
 import axios from 'axios';
+import {TextField} from "@mui/material";
 
 export const Registration = () => {
     const [email, setEmail] = useState('');
@@ -29,37 +30,35 @@ export const Registration = () => {
     }
 
     return (
-        <div className={s.wrapper}>
-            <div>
-                <h4>Registration</h4>
-            </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={s.form}>
+                <h2>Registration</h2>
                 <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
+                    <TextField
                         type="email"
                         id="email"
+                        label="Email"
+                        variant="standard"
                         value={email}
                         onChange={handleEmailChange}
                         required
-
                     />
                 </div>
                 <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
+                    <TextField
+                        id="standard-basic"
+                        label="Password"
+                        variant="standard"
                         type="password"
-                        id="password"
                         value={password}
                         onChange={handlePasswordChange}
                         required
                     />
+
                 </div>
                 <button onClick={fren} type="submit" className={s.button}>
                     Register now
                 </button>
             </form>
-        </div>
     );
 };
 

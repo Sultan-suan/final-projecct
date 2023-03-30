@@ -4,12 +4,13 @@
     align-items: center;
     position: absolute;
     width: 413px;
-    height: 600px;
+    height: 490px;
     background: #F9F9FE;
     border-radius: 8px;
 }
 
 .form h1{
+    margin: 10px;
     font-style: normal;
     font-weight: 600;
     font-size: 22px;
@@ -23,15 +24,11 @@
     height: 25px;
     background: #21268F;
     border-radius: 30px;
+    margin: 50px;
 }
-
-.wrapper {
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    gap: 6px;
-    border: 1px solid gray;
-    padding: 16px;
+.gap{
+    height: 400px;
+    margin: 80px
 }
 
 .form a {
