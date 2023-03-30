@@ -2,10 +2,14 @@ import React, {useState} from 'react';
 import s from './Registration.module.css';
 import axios from 'axios';
 import {TextField} from "@mui/material";
+import {NavLink, useNavigate} from "react-router-dom";
 
 export const Registration = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('')
+
+    const navigate = useNavigate()
 
     const handleEmailChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setEmail(event.target.value);
@@ -21,12 +25,17 @@ export const Registration = () => {
     };
 
     const fren = () => {
-        const response = axios.post("https://cards-nya-back-production.up.railway.app/2.0/auth/register",
+        axios.post("https://cards-nya-back-production.up.railway.app/2.0/auth/register",
             {
                 email,
                 password
             })
-        console.log(response)
+            .then((res) => {
+                navigate('/posts')
+            }). catch((e) => {
+                setError(e.message)
+            })
+
     }
 
     return (
