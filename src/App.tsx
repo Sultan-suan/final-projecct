@@ -3,11 +3,14 @@ import './App.css';
 import {Routes, Route, Navigate} from "react-router-dom";
 import {Login} from "./components/Login/Login";
 import {Registration} from "./components/Registration/Registration";
-import {PackList} from "./components/PackList/PackList";
+import {Posts} from "./components/Posts/Posts";
 
 export function App() {
 
     const [isAuth, setIsAuth] = useState(false)
+    const [tokenDate, setTokenDate] = useState<Date>(new Date())
+
+
 
     return (
         <div className="App">
@@ -16,6 +19,7 @@ export function App() {
                        element={
                            <Login isAuth={isAuth}
                                   setIsAuth={setIsAuth}
+                                  setTokenDate={setTokenDate}
                            />
                        }
                 />
@@ -26,7 +30,7 @@ export function App() {
                 />
                 <Route path="/posts"
                        element={
-                           <PackList isAuth={isAuth}/>
+                           <Posts setIsAuth={setIsAuth}/>
                        }
                 />
                 <Route path="/*"

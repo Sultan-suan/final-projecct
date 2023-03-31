@@ -1,18 +1,23 @@
 import React, {useState} from 'react';
 import s from './Login.module.css';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import {TextField} from "@mui/material";
+
 
 type LoginPropsType = {
     isAuth: boolean
     setIsAuth: (e: any) => void;
+    setTokenDate: (value: Date) => void
 }
+
 
 export const Login = (props: LoginPropsType) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+
+    const navigate = useNavigate();
 
     const handleEmailChange = (event: any) => {
         setEmail(event.target.value);
@@ -26,7 +31,6 @@ export const Login = (props: LoginPropsType) => {
 
     const login = (e: any) => {
         e.preventDefault();
-        props.setIsAuth(true)
     }
 
     const frens = () => {
@@ -35,8 +39,17 @@ export const Login = (props: LoginPropsType) => {
                 email,
                 password
             }
-        ).catch((e) => {
+        ).then((res) => {
+            navigate('/posts')
+            props.setIsAuth(true)
+            localStorage.setItem("token", res.data.token)
+            localStorage.setItem("isAuth", "true")
+            props.setTokenDate(new Date(res.data.tokenDeathTime))
+            localStorage.setItem("tokenDeathTime", res.data.tokenDeathTime)
+            console.log(typeof res.data.tokenDeathTime)
+        }).catch((e) => {
                 setError(e.message)
+                localStorage.setItem("isAuth", "false")
             }
         )
     }
