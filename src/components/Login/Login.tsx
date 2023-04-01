@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import s from './Login.module.css';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import {TextField} from "@mui/material";
 
@@ -13,6 +13,7 @@ export const Login = (props: LoginPropsType) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const navigate = useNavigate()
 
     const handleEmailChange = (event: any) => {
         setEmail(event.target.value);
@@ -34,12 +35,15 @@ export const Login = (props: LoginPropsType) => {
             {
                 email,
                 password
-            }
-        ).catch((e) => {
+            })
+            .then((res) => {
+                navigate('/posts')
+            })
+            .catch((e) => {
                 setError(e.message)
-            }
-        )
+            })
     }
+
 
     return (
         <form className={s.form} onSubmit={login}>
