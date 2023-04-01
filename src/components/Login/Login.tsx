@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import s from './Login.module.css';
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import {TextField} from "@mui/material";
 
 type LoginPropsType = {
-    isAuth: boolean
-    setIsAuth: (e: any) => void;
+    isAuth?: boolean
+    setIsAuth?: (e: any) => void;
 }
 
 export const Login = (props: LoginPropsType) => {
@@ -14,6 +14,9 @@ export const Login = (props: LoginPropsType) => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const navigate = useNavigate()
+    // const location = useLocation()
+
+    // const fromPage = location.state?.from?.pathname || '/';
 
     const handleEmailChange = (event: any) => {
         setEmail(event.target.value);
@@ -27,7 +30,7 @@ export const Login = (props: LoginPropsType) => {
 
     const login = (e: any) => {
         e.preventDefault();
-        props.setIsAuth(true)
+        // props.setIsAuth(true)
     }
 
     const frens = () => {
@@ -50,7 +53,7 @@ export const Login = (props: LoginPropsType) => {
 
             <h1>IT-KARATE</h1>
 
-            <h1>Sign In</h1>
+            <h1>Authorization</h1>
 
             <div>
                 <TextField
