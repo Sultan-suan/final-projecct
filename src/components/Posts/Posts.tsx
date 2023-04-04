@@ -1,10 +1,13 @@
 import React from 'react';
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../redux/store";
 
 type PostsPropsType = {
-    setIsAuth: (value: boolean) => void
+    setIsAuth?: (value: boolean) => void
 }
 
 export const Posts = (props: PostsPropsType) => {
+    const {email, isAdmin} = useSelector<AppRootStateType, any>((state) => state.auth)
     const auth = localStorage.getItem("isAuth")
 
     const compareDates = (date: any) => {
@@ -19,15 +22,19 @@ export const Posts = (props: PostsPropsType) => {
 
     if (compareDates(+localStorage.getItem("tokenDeathTime")!)) {
         localStorage.setItem("isAuth", "false")
-        props.setIsAuth(false)
+        // props.setIsAuth(false)
     }
 
-    return <div>
-        {
-            auth === "true"
-                ? <div>Авторизован</div>
-                : <div>Не авторизован</div>
-        }
-    </div>
+    return (
+        <div>
+            <div>{`email: ${email}`}</div>
+            <div>{`isAdmin: ${isAdmin}`}</div>
+            {
+                auth === "true"
+                    ? <div>Авторизован</div>
+                    : <div>Не авторизован</div>
+            }
+        </div>
+    )
 }
 

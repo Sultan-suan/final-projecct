@@ -15,7 +15,7 @@ export const AppRouter = () => {
             {publicRoutes.map(({path, element}) =>
                 <Route key={path} path={path} element={element}/>
             )}
-            <Route path='/*' element=<Login/> />
+            <Route path='/*' element={<Login/> }/>
         </Routes>
     )
 };

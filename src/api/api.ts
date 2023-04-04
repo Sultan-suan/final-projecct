@@ -13,7 +13,7 @@ export class AuthService {
         return $api.post('auth/register', {email, password})
     }
 
-    static login(email: string, password: string) {
-        return $api.post('auth/login', {email, password})
+    static login(email: string, password: string, rememberMe: boolean) {
+        return $api.post('auth/login', {email, password, rememberMe})
     }
 }

@@ -3,50 +3,50 @@ import {Dispatch} from "redux";
 
 type StateType = {
     email: string
-    password: string
-    error: string
+    error: string,
+    isAdmin: boolean
 }
 
 type RegistrationACType = {
     type: 'REGISTRATION';
     email: string;
-    password: string;
+
 }
 type LoginACType = {
     type: 'LOGIN';
     email: string;
-    password: string;
+    isAdmin: boolean
 }
 
 type ActionType = RegistrationACType | LoginACType
 
 const initialState = {
     email: '',
-    password: '',
-    error: ''
+    error: '',
+    isAdmin: false
 }
 
 export const authReducer = (state: StateType = initialState, action: ActionType) => {
     switch (action.type) {
         case 'REGISTRATION':
-           return {...state, email: action.email, password: action.password};
+           return {...state, email: action.email};
         case 'LOGIN':
-           return {...state, email: action.email, password: action.password};
+           return {...state, email: action.email, isAdmin:action.isAdmin};
         default:
             return state;
     }
 }
 
 
-const registrationAC = (email: string, password: string) => ({
-    type: 'REGISTRATION', email, password
+const registrationAC = (email: string) => ({
+    type: 'REGISTRATION', email
 })
 
-const loginAC = (email: string, password: string) => ({
-    type: 'LOGIN', email, password
+const loginAC = (email: string, isAdmin: boolean) => ({
+    type: 'LOGIN', email, isAdmin
 })
 
-const registrationTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
+export const registrationTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
         const response = await AuthService.registration(email, password)
         if (response.status === 200) {
@@ -57,12 +57,12 @@ const registrationTC = (email: string, password: string, navigate: (path: string
 
     }
 }
-const loginTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
+export const loginTC = (email: string, password: string, rememberMe: boolean, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
-        const response = await AuthService.login(email, password)
-        if (response.status === 200) {
+        const {data, status} = await AuthService.login(email, password, rememberMe)
+        if (status === 200) {
             navigate('/posts')
-            dispatch(loginAC(response.data.email, response.data.password))
+            dispatch(loginAC(data.email, data.isAdmin))
         }
     } catch (e: any) {
 
