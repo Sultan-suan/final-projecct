@@ -33,7 +33,7 @@ export const Login = (props: LoginPropsType) => {
         // props.setIsAuth(true)
     }
 
-    const frens = () => {
+    const responseLog = () => {
         axios.post("https://cards-nya-back-production.up.railway.app/2.0/auth/login",
             {
                 email,
@@ -84,7 +84,7 @@ export const Login = (props: LoginPropsType) => {
 
             {/*<NavLink className={s.gap} to={"/posts"}>Forgot password</NavLink>*/}
 
-            <button onClick={() => frens()} type="submit">Sign in</button>
+            <button onClick={() => responseLog()} type="submit">Sign in</button>
 
             <NavLink to={"/registration"}>Don't have an account?</NavLink>
 

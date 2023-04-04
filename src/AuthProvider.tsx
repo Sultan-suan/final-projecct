@@ -19,6 +19,8 @@ export const AuthProvider = ({children}: any) => {
 
     const value = {user, signIn, signOut}
 
+    // Как здесь указать типизацию?
+
     return <AuthContext.Provider value={value}>
         {children}
     </AuthContext.Provider>

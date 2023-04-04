@@ -24,7 +24,7 @@ export const Registration = () => {
         console.log(`Email: ${email}, Password: ${password}`);
     };
 
-    const fren = () => {
+    const responseReg = () => {
         axios.post("https://cards-nya-back-production.up.railway.app/2.0/auth/register",
             {
                 email,
@@ -67,7 +67,7 @@ export const Registration = () => {
                     />
 
                 </div>
-                <button onClick={fren} type="submit" className={s.button}>
+                <button onClick={responseReg} type="submit" className={s.button}>
                     Register now
                 </button>
 
