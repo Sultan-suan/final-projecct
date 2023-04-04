@@ -70,6 +70,8 @@ export const Registration = () => {
                 <button onClick={fren} type="submit" className={s.button}>
                     Register now
                 </button>
+
+                <NavLink to={"/login"}>Do you have an account?</NavLink>
             </form>
     );
 };
