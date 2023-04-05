@@ -7,13 +7,6 @@ import {useDispatch} from "react-redux";
 import {loginTC} from "../redux/Auth-reducer";
 import {useFormik} from "formik";
 
-
-type LoginPropsType = {
-    isAuth?: boolean
-    setIsAuth?: (e: any) => void;
-    setTokenDate?: (value: Date) => void
-}
-
 const validate = (values: any) => {
     const errors: any = {};
 
@@ -26,7 +19,8 @@ const validate = (values: any) => {
     }
     return errors;
 };
-export const Login = (props: LoginPropsType) => {
+
+export const Login = () => {
     const dispatch = useDispatch<any>()
     // const [error, setError] = useState('')
 
@@ -77,7 +71,9 @@ export const Login = (props: LoginPropsType) => {
     return (
         <form className={s.form} onSubmit={formik.handleSubmit}>
             <h1>IT-KARATE</h1>
-            <h1>Sign In</h1>
+
+            <h1>Login</h1>
+
             <TextField
                 value={formik.values.email}
                 onChange={formik.handleChange}
@@ -91,6 +87,7 @@ export const Login = (props: LoginPropsType) => {
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
             />
+
             <TextField
                 value={formik.values.password}
                 onChange={formik.handleChange}
@@ -104,8 +101,11 @@ export const Login = (props: LoginPropsType) => {
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
             />
-            <Checkbox onChange={formik.handleChange}/>
+
+            {/*<Checkbox onChange={formik.handleChange}/>*/}
+
             {/*{error && <div style={{color: "red"}}>Вы ввели некорректные данные</div>}*/}
+
             {/*<NavLink className={s.gap} to={"/posts"}>Forgot password</NavLink>*/}
 
             <button type="submit">

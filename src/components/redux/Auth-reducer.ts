@@ -10,8 +10,8 @@ type StateType = {
 type RegistrationACType = {
     type: 'REGISTRATION';
     email: string;
-
 }
+
 type LoginACType = {
     type: 'LOGIN';
     email: string;
@@ -29,9 +29,9 @@ const initialState = {
 export const authReducer = (state: StateType = initialState, action: ActionType) => {
     switch (action.type) {
         case 'REGISTRATION':
-           return {...state, email: action.email};
+            return {...state, email: action.email};
         case 'LOGIN':
-           return {...state, email: action.email, isAdmin:action.isAdmin};
+            return {...state, email: action.email, isAdmin: action.isAdmin};
         default:
             return state;
     }
@@ -48,10 +48,10 @@ const loginAC = (email: string, isAdmin: boolean) => ({
 
 export const registrationTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
-        const response = await AuthService.registration(email, password)
-        if (response.status === 200) {
+        const {data, status} = await AuthService.registration(email, password)
+        if (status === 201) {
+            dispatch(registrationAC(data.email))
             navigate('/login')
-            // dispatch(registrationAC(response.data.email, response.data.password))
         }
     } catch (e: any) {
 
