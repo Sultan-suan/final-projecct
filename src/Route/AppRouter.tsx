@@ -6,6 +6,7 @@ import {Login} from "../components/Login/Login";
 export const AppRouter = () => {
 
     const isAuth = true;
+    const token = localStorage.getItem("token")
 
     return (
         <Routes>

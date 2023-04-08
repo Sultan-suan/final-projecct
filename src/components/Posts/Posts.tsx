@@ -1,30 +1,33 @@
-import React from 'react';
-import {useSelector} from "react-redux";
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../redux/store";
+import {authMeTC} from "../redux/auth-reducer";
+import {Navigate} from "react-router-dom";
 
 export const Posts = () => {
-    const {email, isAdmin} = useSelector<AppRootStateType, any>((state) => state.auth)
-    const auth = localStorage.getItem("isAuth")
 
-    // const compareDates = (date: any) => {
-    //     const d1 = new Date().toISOString();
-    //     const d2 = new Date(date).toISOString();
-    //     if (d1 > d2) {
-    //         return 1;
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    //
-    // if (compareDates(+localStorage.getItem("tokenDeathTime")!)) {
-    //     localStorage.setItem("isAuth", "false")
-    //     // props.setIsAuth(false)
-    // }
+    const {email, isAdmin, token, isAuth} = useSelector<AppRootStateType, any>((state) => state.auth)
+
+    const dispatch = useDispatch<any>()
+
+    useEffect(() => {
+        dispatch(authMeTC())
+    }, [])
 
     return (
         <div>
-            <div>{`email: ${email}`}</div>
-            <div>{`isAdmin: ${isAdmin}`}</div>
+            {
+                isAuth
+                    ? (
+                        <div>
+                            <div>{`email: ${email}`}</div>
+                            <div>{`isAdmin: ${isAdmin}`}</div>
+                            <div>{`token: ${token}`}</div>
+                        </div>
+                    )
+                    : <p>No users to display</p>
+                // <Navigate to="/login"/>
+            }
         </div>
     )
 }

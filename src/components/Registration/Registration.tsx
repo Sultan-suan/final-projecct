@@ -4,7 +4,7 @@ import {TextField} from "@mui/material";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useFormik} from "formik";
-import {registrationTC} from "../redux/Auth-reducer";
+import {registrationTC} from "../redux/auth-reducer";
 
 const validate = (values: any) => {
     const errors: any = {};

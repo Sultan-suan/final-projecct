@@ -5,15 +5,21 @@ const $api = axios.create({
     baseURL: "https://cards-nya-back-production.up.railway.app/2.0",
     headers: {
         "Content-Type": "application/json"
-    }
+    },
+    withCredentials: true
 })
 
 export class AuthService {
-    static registration(email: string, password: string) {
-        return $api.post('auth/register', {email, password})
+    static async registration(email: string, password: string) {
+        return await $api.post('auth/register', {email, password})
     }
 
-    static login(email: string, password: string, rememberMe: boolean) {
-        return $api.post('auth/login', {email, password, rememberMe})
+    static async login(email: string, password: string, rememberMe: boolean) {
+        return await $api.post('auth/login', {email, password, rememberMe})
     }
+
+    static async authMe() {
+        return await $api.post('auth/me', {})
+    }
+
 }
