@@ -5,8 +5,8 @@ type StateType = {
     email: string
     error: string,
     isAdmin: boolean;
+    isAuth: boolean
     token: string
-    isAuth:boolean
 }
 
 type RegistrationACType = {
@@ -18,8 +18,8 @@ type LoginACType = {
     type: 'LOGIN';
     email: string;
     isAdmin: boolean
-    token: string
     isAuth: boolean
+    token: string
 }
 
 type ActionType = RegistrationACType | LoginACType
@@ -28,8 +28,8 @@ const initialState = {
     email: '',
     error: '',
     isAdmin: false,
-    token: '',
-    isAuth: false
+    isAuth: false,
+    token: ''
 }
 
 export const authReducer = (state: StateType = initialState, action: ActionType) => {
@@ -37,7 +37,7 @@ export const authReducer = (state: StateType = initialState, action: ActionType)
         case 'REGISTRATION':
             return {...state, email: action.email};
         case 'LOGIN':
-            return {...state, email: action.email, isAdmin: action.isAdmin, token: action.token, isAuth: action.isAuth};
+            return {...state, email: action.email, isAdmin: action.isAdmin, isAuth: action.isAuth};
         default:
             return state;
     }
@@ -67,10 +67,9 @@ export const registrationTC = (email: string, password: string, navigate: (path:
 export const loginTC = (email: string, password: string, rememberMe: boolean, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
         const response = await AuthService.login(email, password, rememberMe)
-        if (response.status === 200) {
-            dispatch(loginAC(response.data.email, response.data.isAdmin, response.data.token, true))
-            navigate('/posts')
-        }
+        localStorage.setItem("token", response.data.token)
+        dispatch(loginAC(response.data.email, response.data.isAdmin, response.data.isAdmin, true))
+        navigate('/posts')
     } catch (e: any) {
 
     }
@@ -78,11 +77,12 @@ export const loginTC = (email: string, password: string, rememberMe: boolean, na
 
 export const authMeTC = () => async (dispatch: Dispatch) => {
     try {
-        const response = await AuthService.authMe()
-        if (response.status === 200) {
+        const token = localStorage.getItem("token")
+        if (token) {
+            const response = await AuthService.authMe(token)
             dispatch(loginAC(response.data.email, response.data.isAdmin, response.data.token, true))
+            console.log('response:', response);
         }
-        console.log('response:', response);
     } catch (e) {
         console.log('error:', e);
     }

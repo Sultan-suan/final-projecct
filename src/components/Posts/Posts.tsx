@@ -6,7 +6,7 @@ import {Navigate} from "react-router-dom";
 
 export const Posts = () => {
 
-    const {email, isAdmin, token, isAuth} = useSelector<AppRootStateType, any>((state) => state.auth)
+    const {email, isAdmin} = useSelector<AppRootStateType, any>((state) => state.auth)
 
     const dispatch = useDispatch<any>()
 
@@ -16,18 +16,23 @@ export const Posts = () => {
 
     return (
         <div>
-            {
-                isAuth
-                    ? (
-                        <div>
-                            <div>{`email: ${email}`}</div>
-                            <div>{`isAdmin: ${isAdmin}`}</div>
-                            <div>{`token: ${token}`}</div>
-                        </div>
-                    )
-                    : <p>No users to display</p>
-                // <Navigate to="/login"/>
-            }
+
+                    <p>No users to display</p>
+
+
+
+            {/*{*/}
+            {/*    isAuth*/}
+            {/*        ? (*/}
+            {/*            <div>*/}
+            {/*                <div>{`email: ${email}`}</div>*/}
+            {/*                <div>{`isAdmin: ${isAdmin}`}</div>*/}
+            {/*                <div>{`token: ${token}`}</div>*/}
+            {/*            </div>*/}
+            {/*        )*/}
+            {/*        : <p>No users to display</p>*/}
+            {/*    // <Navigate to="/login"/>*/}
+            {/*}*/}
         </div>
     )
 }

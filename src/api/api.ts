@@ -6,7 +6,6 @@ const $api = axios.create({
     headers: {
         "Content-Type": "application/json"
     },
-    withCredentials: true
 })
 
 export class AuthService {
@@ -18,8 +17,8 @@ export class AuthService {
         return await $api.post('auth/login', {email, password, rememberMe})
     }
 
-    static async authMe() {
-        return await $api.post('auth/me', {})
+    static async authMe(token: string) {
+        return await $api.post('auth/me', {token})
     }
 
 }
