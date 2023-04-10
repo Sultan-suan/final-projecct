@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../redux/store";
 import {authMeTC} from "../redux/auth-reducer";
-import {Navigate} from "react-router-dom";
 
 export const Posts = () => {
 
@@ -17,8 +16,7 @@ export const Posts = () => {
     return (
         <div>
 
-                    <p>No users to display</p>
-
+            <p>No users to display</p>
 
 
             {/*{*/}

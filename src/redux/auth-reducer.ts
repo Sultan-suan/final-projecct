@@ -55,10 +55,8 @@ const loginAC = (email: string, isAdmin: boolean, token: string, isAuth: boolean
 export const registrationTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
         const {data, status} = await AuthService.registration(email, password)
-        if (status === 201) {
             dispatch(registrationAC(data.email))
             navigate('/login')
-        }
     } catch (e: any) {
 
     }
