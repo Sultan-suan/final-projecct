@@ -7,10 +7,7 @@ import {AppRootStateType} from "./redux/store";
 
 export function App() {
 
-    const {email, isAdmin, isAuth} = useSelector<AppRootStateType, any>((state) => state.auth)
-
-
-    // const token = localStorage.getItem("token")
+    const {isAuth} = useSelector<AppRootStateType, any>((state) => state.authReducer)
 
     return (
         <div className="App">
@@ -21,7 +18,6 @@ export function App() {
                 {publicRoutes.map(({path, element}) =>
                     <Route key={path} path={path} element={element}/>
                 )}
-                {/*<Route path='/*' element={<Login/> }/>*/}
             </Routes>
         </div>
     );

@@ -5,7 +5,7 @@ import {authMeTC} from "../../redux/auth-reducer";
 
 export const PackLists = () => {
 
-    const {email, isAdmin, isAuth} = useSelector<AppRootStateType, any>((state) => state.auth)
+    const {email, isAdmin, isAuth} = useSelector<AppRootStateType, any>(state => state.authReducer)
 
     const dispatch = useDispatch<any>()
     const token = localStorage.getItem("token")
