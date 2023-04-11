@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/store";
 import {authMeTC} from "../../redux/auth-reducer";
+import s from "./Cards/Cards.module.css";
 
 export const PackLists = () => {
 
@@ -16,7 +17,7 @@ export const PackLists = () => {
 
     return (
         <div>
-            {
+        {
                 token
                     ? (
                         <div>
