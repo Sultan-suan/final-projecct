@@ -1,13 +1,13 @@
 import React from "react";
 import {Registration} from "../components/Registration/Registration";
 import {Login} from "../components/Login/Login";
-import {Posts} from "../components/Posts/Posts";
+import {PackLists} from "../components/PackLists/PackLists";
 import {LOGIN_ROUTE, POSTS_ROUTE, REGISTRATION_ROUTE} from "../Utils/Utils";
 
 export const privateRoutes = [
     {
         path: POSTS_ROUTE,
-        element: <Posts/>
+        element: <PackLists/>
     },
 ]
 

@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../redux/store";
-import {authMeTC} from "../redux/auth-reducer";
+import {AppRootStateType} from "../../redux/store";
+import {authMeTC} from "../../redux/auth-reducer";
 
-export const Posts = () => {
+export const PackLists = () => {
 
-    const {email, isAdmin} = useSelector<AppRootStateType, any>((state) => state.auth)
+    const {email, isAdmin, isAuth} = useSelector<AppRootStateType, any>((state) => state.auth)
 
     const dispatch = useDispatch<any>()
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
         dispatch(authMeTC())
@@ -15,22 +16,19 @@ export const Posts = () => {
 
     return (
         <div>
-
-            <p>No users to display</p>
-
-
-            {/*{*/}
-            {/*    isAuth*/}
-            {/*        ? (*/}
-            {/*            <div>*/}
-            {/*                <div>{`email: ${email}`}</div>*/}
-            {/*                <div>{`isAdmin: ${isAdmin}`}</div>*/}
-            {/*                <div>{`token: ${token}`}</div>*/}
-            {/*            </div>*/}
-            {/*        )*/}
-            {/*        : <p>No users to display</p>*/}
-            {/*    // <Navigate to="/login"/>*/}
-            {/*}*/}
+            {
+                token
+                    ? (
+                        <div>
+                            <div>{`email: ${email}`}</div>
+                            <div>{`isAdmin: ${isAdmin}`}</div>
+                            <div>{`token: ${token}`}</div>
+                            <div>{`isAuth: ${isAuth}`}</div>
+                        </div>
+                    )
+                    : <p>No users to display</p>
+                // <Navigate to="/login"/>
+            }
         </div>
     )
 }

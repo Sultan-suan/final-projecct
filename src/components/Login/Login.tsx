@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import s from './Login.module.css';
 import {NavLink, useNavigate} from "react-router-dom";
-import axios from 'axios';
 import {Checkbox, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
-import {loginTC} from "../redux/auth-reducer";
+import {loginTC} from "../../redux/auth-reducer";
 import {useFormik} from "formik";
+import {MyButton} from "../../UI/MyButton/MyButton";
 
 const validate = (values: any) => {
     const errors: any = {};
@@ -16,7 +16,6 @@ const validate = (values: any) => {
 
 export const Login = () => {
     const dispatch = useDispatch<any>()
-    // const [error, setError] = useState('')
 
     const navigate = useNavigate();
 
@@ -75,9 +74,9 @@ export const Login = () => {
 
             {/*<NavLink className={s.gap} to={"/posts"}>Forgot password</NavLink>*/}
 
-            <button type="submit">
+            <MyButton type="submit">
                 Sign in
-            </button>
+            </MyButton>
 
             <NavLink to={"/registration"}>Don't have an account?</NavLink>
 

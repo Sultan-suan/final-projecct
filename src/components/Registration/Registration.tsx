@@ -4,7 +4,8 @@ import {TextField} from "@mui/material";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useFormik} from "formik";
-import {registrationTC} from "../redux/auth-reducer";
+import {registrationTC} from "../../redux/auth-reducer";
+import {MyButton} from "../../UI/MyButton/MyButton";
 
 const validate = (values: any) => {
     const errors: any = {};
@@ -21,22 +22,8 @@ const validate = (values: any) => {
 
 export const Registration = () => {
     const dispatch = useDispatch<any>()
-    // const [error, setError] = useState('')
 
     const navigate = useNavigate()
-
-    // const handleEmailChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    //     setEmail(event.target.value);
-    // };
-    //
-    // const handlePasswordChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    //     setPassword(event.target.value);
-    // };
-
-    // const handleSubmit = (event: { preventDefault: () => void; }) => {
-    //     event.preventDefault();
-    //     console.log(`Email: ${email}, Password: ${password}`);
-    // };
 
     const formik = useFormik({
         initialValues: {
@@ -52,19 +39,6 @@ export const Registration = () => {
         }
     });
 
-    // const fren = () => {
-    //     axios.post("https://cards-nya-back-production.up.railway.app/2.0/auth/register",
-    //         {
-    //             email,
-    //             password
-    //         })
-    //         .then((res) => {
-    //             navigate('/posts')
-    //         }). catch((e) => {
-    //             setError(e.message)
-    //         })
-    //
-    // }
 
     return (
             <form onSubmit={formik.handleSubmit} className={s.form}>
@@ -100,9 +74,9 @@ export const Registration = () => {
                     helperText={formik.touched.password && formik.errors.password}
                 />
 
-                <button type="submit" className={s.button}>
+                <MyButton type="submit" className={s.button}>
                     Register now
-                </button>
+                </MyButton>
 
                 <NavLink to={"/login"}>Do you have an account?</NavLink>
             </form>

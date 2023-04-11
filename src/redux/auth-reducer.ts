@@ -1,4 +1,4 @@
-import {AuthService} from "../../api/api";
+import {AuthService} from "../api/api";
 import {Dispatch} from "redux";
 
 type StateType = {
@@ -52,11 +52,12 @@ const loginAC = (email: string, isAdmin: boolean, token: string, isAuth: boolean
     type: 'LOGIN', email, isAdmin, token, isAuth
 })
 
+
 export const registrationTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
         const {data, status} = await AuthService.registration(email, password)
-            dispatch(registrationAC(data.email))
-            navigate('/login')
+        dispatch(registrationAC(data.email))
+        navigate('/login')
     } catch (e: any) {
 
     }
@@ -66,7 +67,7 @@ export const loginTC = (email: string, password: string, rememberMe: boolean, na
     try {
         const response = await AuthService.login(email, password, rememberMe)
         localStorage.setItem("token", response.data.token)
-        dispatch(loginAC(response.data.email, response.data.isAdmin, response.data.isAdmin, true))
+        dispatch(loginAC(response.data.email, response.data.isAdmin, response.data.token, true))
         navigate('/posts')
     } catch (e: any) {
 
@@ -78,7 +79,8 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
         const token = localStorage.getItem("token")
         if (token) {
             const response = await AuthService.authMe(token)
-            dispatch(loginAC(response.data.email, response.data.isAdmin, response.data.token, true))
+            console.log(token)
+            dispatch(loginAC(response.data.email, response.data.isAdmin, token, true))
             console.log('response:', response);
         }
     } catch (e) {
