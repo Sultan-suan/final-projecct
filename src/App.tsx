@@ -13,6 +13,7 @@ export function App() {
 
     return (
         <div className="App">
+            {/*<Cards/>*/}
             <Routes>
                 {isAuth && privateRoutes.map(({path, element}) =>
                     <Route key={path} path={path} element={element}/>

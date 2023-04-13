@@ -1,5 +1,22 @@
 import {Dispatch} from "redux";
-import {AuthService, PacksService} from "../api/api";
+import {PacksService} from "../api/api";
+
+type ActionType = GetTableACType | AddTableACType | RemoveTableACType;
+
+type GetTableACType = {
+    type: 'GET_TABLE',
+    data: any
+}
+
+type AddTableACType = {
+    type: 'ADD_TABLE',
+    cardPack: CardPacks
+}
+
+type RemoveTableACType = {
+    type: 'REMOVE_TABLE',
+    data: any
+}
 
 type CardPacks = {
     _id: string,
@@ -19,13 +36,6 @@ type StateType = {
     pageCount: number,
 }
 
-type ActionType = GetTableACType
-
-type GetTableACType = {
-    type: 'GET_TABLE',
-    data: any
-}
-
 const initialState = {
     cardPacks: [
         {
@@ -38,24 +48,35 @@ const initialState = {
         },
     ],
     cardPacksTotalCount: 0, // количество колод
-    maxCardsCount: 9,
-    minCardsCount: 3,
+    maxCardsCount: 0,
+    minCardsCount: 0,
     page: 0, // выбранная страница
     pageCount: 0, // количество элементов на странице
 }
 
-export const tableReducer = (state: any = initialState, action: ActionType) => {
+export const tableReducer = (state: StateType = initialState, action: ActionType) => {
     switch (action.type) {
         case 'GET_TABLE':
-            return {...state}
+            return {...state, ...action.data}
+        case 'ADD_TABLE':
+            return {...state, cardPacks: action.cardPack}
+        case 'REMOVE_TABLE':
+            return {...state, cardPacks: state.cardPacks.map(() => {})}
         default:
             return state;
     }
 }
 
-
-const getTableAC = (data: any) => ({
+const getTableAC = (data: GetTableACType) => ({
     type: 'GET_TABLE', data: data
+})
+
+const addTableAC = (data: AddTableACType) => ({
+    type: 'ADD_TABLE', data: data
+})
+
+const removeTableAC = (data: RemoveTableACType) => ({
+    type: 'REMOVE_TABLE', data: data
 })
 
 
@@ -65,5 +86,24 @@ export const getTableTC = () => async (dispatch: Dispatch) => {
         dispatch(getTableAC(response.data))
     } catch (e) {
         console.log('error:', e);
+    }
+}
+
+export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
+    try {
+        const response = await PacksService.addTable(name)
+        const res = await PacksService.getTable()
+        dispatch(getTableAC(res.data))
+    } catch (e) {
+        console.log('error:', e);
+    }
+}
+
+export const removeTableTC = (id: string) => async (dispatch: Dispatch) => {
+    try {
+        const response = await PacksService.removeTable(id)
+        dispatch(removeTableAC(response.data))
+    } catch (e) {
+        console.log('error', e)
     }
 }

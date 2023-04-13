@@ -52,14 +52,18 @@ const loginAC = (email: string, isAdmin: boolean, token: string, isAuth: boolean
     type: 'LOGIN', email, isAdmin, token, isAuth
 })
 
+const authMeAC = (email: string, isAdmin: boolean, token: string, isAuth: boolean) => ({
+    type: 'LOGIN', email, isAdmin, token, isAuth
+})
+
 
 export const registrationTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
-        const {data, status} = await AuthService.registration(email, password)
+        const {data} = await AuthService.registration(email, password)
         dispatch(registrationAC(data.email))
         navigate('/login')
     } catch (e: any) {
-
+        console.log('error:', e);
     }
 }
 
@@ -79,7 +83,7 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
         const token = localStorage.getItem("token")
         if (token) {
             const response = await AuthService.authMe(token)
-            // console.log(token)
+            console.log(token)
             dispatch(loginAC(response.data.email, response.data.isAdmin, token, true))
             // console.log('response:', response);
         }

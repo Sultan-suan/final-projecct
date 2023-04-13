@@ -28,5 +28,11 @@ export class PacksService {
     static async getTable() {
         return await $api.get('cards/pack')
     }
+    static async addTable(name: string) {
+        return await $api.post('cards/pack', {cardsPack: {name: name}})
+    }
+    static async removeTable(id: string) {
+        return await $api.delete('cards/pack')
+    }
 }
 

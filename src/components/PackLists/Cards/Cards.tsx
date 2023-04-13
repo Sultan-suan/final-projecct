@@ -1,23 +1,27 @@
 import React, {useEffect} from 'react';
 import s from './Cards.module.css'
-import {MyButton} from "../../../UI/MyButton/MyButton";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
-import {getTableTC} from "../../../redux/table-reducer";
+import {addTableTC, getTableTC, removeTableTC} from "../../../redux/table-reducer";
 
 export const Cards = () => {
 
-    const {} = useSelector<AppRootStateType, any>(state => state.tableReducer)
+    const Packs = useSelector<AppRootStateType, any>(state => state.tableReducer)
 
     const dispatch = useDispatch<any>()
 
-    // useEffect(() => {
-    //     dispatch(getTableTC())
-    // }, [])
-
-    const getPacks = () => {
-        dispatch(getTableTC())
+    const addNewPack = (name: any) => {
+        dispatch(addTableTC(name))
     }
+
+    const removeTable = (id: string) => {
+        dispatch(removeTableTC(id))
+    }
+
+    useEffect(() => {
+        dispatch(getTableTC())
+    }, [])
+
 
     return (
         <div className={s.wrapper}>
@@ -29,16 +33,34 @@ export const Cards = () => {
                 <h1>Packs list</h1>
                 <div>
                     <input className={s.input} placeholder='  Search'/>
-                    <button className={s.button}>Add new pack</button>
+                    <button onClick={() => addNewPack(prompt())} className={s.button}>Add new pack</button>
                 </div>
-                <div>
-                    Name: {}
-                    <button onClick={getPacks}> getPacks</button>
-                    {/*<div>{`email: ${email}`}</div>*/}
-                    {/*<div>{`isAdmin: ${isAdmin}`}</div>*/}
-                    {/*<div>{`isAuth: ${isAuth}`}</div>*/}
+
+                <div className={s.cards}>
+                    <div>Name</div>
+                    <div>Cards</div>
+                    {/*<div>Last updated</div>*/}
+                    <div>Created by</div>
+                    {/*<div>Actions</div>*/}
                 </div>
+
+                {Packs
+                    ?
+                    <div>
+                        {Packs.cardPacks.map((cardPack: any, index: number) => <div
+                                onClick={() => removeTable(cardPack.id)}
+                                className={s.cards} key={index}>
+                                <div>{cardPack.name}</div>
+                                <div>{cardPack.cardsCount}</div>
+                                {/*<div>{cardPack.updated}</div>*/}
+                                <div>{cardPack.user_name}</div>
+                            </div>
+                        )}
+                    </div>
+                    : ""
+                }
             </div>
+
 
         </div>
     );

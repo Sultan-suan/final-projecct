@@ -49,3 +49,12 @@
     margin-left: 24px;
 }
 
+.cards {
+    Width: 669px;
+    Height: 48px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
