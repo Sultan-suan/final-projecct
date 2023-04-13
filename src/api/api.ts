@@ -1,11 +1,11 @@
 import axios from "axios";
 
-
 const $api = axios.create({
     baseURL: "https://cards-nya-back-production.up.railway.app/2.0",
     headers: {
         "Content-Type": "application/json"
     },
+    withCredentials: true
 })
 
 export class AuthService {
@@ -22,3 +22,11 @@ export class AuthService {
     }
 
 }
+
+
+export class PacksService {
+    static async getTable() {
+        return await $api.get('cards/pack')
+    }
+}
+

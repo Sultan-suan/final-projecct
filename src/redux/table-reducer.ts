@@ -1,36 +1,69 @@
+import {Dispatch} from "redux";
+import {AuthService, PacksService} from "../api/api";
+
+type CardPacks = {
+    _id: string,
+    user_id: string,
+    name: string,
+    cardsCount: number,
+    created: string,
+    updated: string,
+}
 
 type StateType = {
+    cardPacks: CardPacks[],
+    cardPacksTotalCount: number,
+    maxCardsCount: number,
+    minCardsCount: number,
+    page: number,
+    pageCount: number,
+}
 
+type ActionType = GetTableACType
+
+type GetTableACType = {
+    type: 'GET_TABLE',
+    data: any
 }
 
 const initialState = {
     cardPacks: [
         {
-            _id: "5eb6cef840b7bf1cf0d8122d",
-            user_id: "5eb543f6bea3ad21480f1ee7",
-            name: "no Name",
-            cardsCount: 25,
-            created: "2020-05-09T15:40:40.339Z",
-            updated: "2020-05-09T15:40:40.339Z",
+            _id: "",
+            user_id: "",
+            name: "",
+            cardsCount: 0,
+            created: "",
+            updated: "",
         },
     ],
-    cardPacksTotalCount: 14, // количество колод
-    maxCardsCount: 4,
-    minCardsCount: 0,
-    page: 1, // выбранная страница
-    pageCount: 4, // количество элементов на странице
-
+    cardPacksTotalCount: 0, // количество колод
+    maxCardsCount: 9,
+    minCardsCount: 3,
+    page: 0, // выбранная страница
+    pageCount: 0, // количество элементов на странице
 }
 
-type ActionType = {
-    type: 'GET_TABLE'
-}
-
-export const tableReducer = (state: StateType = initialState, action: ActionType) => {
+export const tableReducer = (state: any = initialState, action: ActionType) => {
     switch (action.type) {
         case 'GET_TABLE':
             return {...state}
         default:
             return state;
+    }
+}
+
+
+const getTableAC = (data: any) => ({
+    type: 'GET_TABLE', data: data
+})
+
+
+export const getTableTC = () => async (dispatch: Dispatch) => {
+    try {
+        const response = await PacksService.getTable()
+        dispatch(getTableAC(response.data))
+    } catch (e) {
+        console.log('error:', e);
     }
 }

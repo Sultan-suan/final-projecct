@@ -79,10 +79,11 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
         const token = localStorage.getItem("token")
         if (token) {
             const response = await AuthService.authMe(token)
-            console.log(token)
+            // console.log(token)
             dispatch(loginAC(response.data.email, response.data.isAdmin, token, true))
-            console.log('response:', response);
+            // console.log('response:', response);
         }
+
     } catch (e) {
         console.log('error:', e);
     }

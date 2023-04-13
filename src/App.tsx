@@ -13,16 +13,14 @@ export function App() {
 
     return (
         <div className="App">
-            <Header/>
-            <Cards/>
-            {/*<Routes>*/}
-            {/*    {isAuth && privateRoutes.map(({path, element}) =>*/}
-            {/*        <Route key={path} path={path} element={element}/>*/}
-            {/*    )}*/}
-            {/*    {publicRoutes.map(({path, element}) =>*/}
-            {/*        <Route key={path} path={path} element={element}/>*/}
-            {/*    )}*/}
-            {/*</Routes>*/}
+            <Routes>
+                {isAuth && privateRoutes.map(({path, element}) =>
+                    <Route key={path} path={path} element={element}/>
+                )}
+                {publicRoutes.map(({path, element}) =>
+                    <Route key={path} path={path} element={element}/>
+                )}
+            </Routes>
         </div>
     );
 }
