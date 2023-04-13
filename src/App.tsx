@@ -4,8 +4,7 @@ import {Route, Routes} from "react-router-dom";
 import {privateRoutes, publicRoutes} from "./Route/Routes";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./redux/store";
-import {Cards} from "./components/PackLists/Cards/Cards";
-import {Header} from "./components/PackLists/Header/Header";
+
 
 export function App() {
 
@@ -13,9 +12,8 @@ export function App() {
 
     return (
         <div className="App">
-            {/*<Cards/>*/}
             <Routes>
-                {isAuth && privateRoutes.map(({path, element}) =>
+                {privateRoutes.map(({path, element}) =>
                     <Route key={path} path={path} element={element}/>
                 )}
                 {publicRoutes.map(({path, element}) =>

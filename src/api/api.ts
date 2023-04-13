@@ -18,7 +18,7 @@ export class AuthService {
     }
 
     static async authMe(token: string) {
-        return await $api.post('auth/me', {token})
+        return await $api.post('auth/me', {})
     }
 
 }

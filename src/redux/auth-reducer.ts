@@ -22,7 +22,10 @@ type LoginACType = {
     token: string
 }
 
-type ActionType = RegistrationACType | LoginACType
+type ActionType =
+    | RegistrationACType
+    | LoginACType
+    | ReturnType<typeof setError>
 
 const initialState = {
     email: '',
@@ -32,12 +35,14 @@ const initialState = {
     token: ''
 }
 
-export const authReducer = (state: StateType = initialState, action: ActionType) => {
+export const authReducer = (state: StateType = initialState, action: ActionType): StateType => {
     switch (action.type) {
         case 'REGISTRATION':
             return {...state, email: action.email};
         case 'LOGIN':
             return {...state, email: action.email, isAdmin: action.isAdmin, isAuth: action.isAuth};
+        case 'SET_ERROR':
+            return {...state, error: action.text}
         default:
             return state;
     }
@@ -46,6 +51,10 @@ export const authReducer = (state: StateType = initialState, action: ActionType)
 
 const registrationAC = (email: string) => ({
     type: 'REGISTRATION', email
+})
+
+const setError = (text: string) => ({
+    type: 'SET_ERROR' as const, text
 })
 
 const loginAC = (email: string, isAdmin: boolean, token: string, isAuth: boolean) => ({
@@ -57,17 +66,27 @@ const authMeAC = (email: string, isAdmin: boolean, token: string, isAuth: boolea
 })
 
 
-export const registrationTC = (email: string, password: string, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
+export const registrationTC = (
+    email: string,
+    password: string,
+    navigate: (path: string) => void
+) => async (dispatch: Dispatch) => {
     try {
         const {data} = await AuthService.registration(email, password)
         dispatch(registrationAC(data.email))
         navigate('/login')
     } catch (e: any) {
+        dispatch(setError(e.response.data.error))
         console.log('error:', e);
     }
 }
 
-export const loginTC = (email: string, password: string, rememberMe: boolean, navigate: (path: string) => void) => async (dispatch: Dispatch) => {
+export const loginTC = (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    navigate: (path: string) => void
+) => async (dispatch: Dispatch) => {
     try {
         const response = await AuthService.login(email, password, rememberMe)
         localStorage.setItem("token", response.data.token)
@@ -78,17 +97,18 @@ export const loginTC = (email: string, password: string, rememberMe: boolean, na
     }
 }
 
-export const authMeTC = () => async (dispatch: Dispatch) => {
+export const authMeTC = (navigate: any) => async (dispatch: Dispatch) => {
     try {
         const token = localStorage.getItem("token")
         if (token) {
             const response = await AuthService.authMe(token)
-            console.log(token)
+            localStorage.setItem("token", response.data.token)
             dispatch(loginAC(response.data.email, response.data.isAdmin, token, true))
-            // console.log('response:', response);
+
         }
 
     } catch (e) {
+        navigate('/login')
         console.log('error:', e);
     }
 }

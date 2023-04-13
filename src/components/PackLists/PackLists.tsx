@@ -5,29 +5,29 @@ import {authMeTC} from "../../redux/auth-reducer";
 import s from './PackLists.module.css'
 import {Header} from "./Header/Header";
 import {Cards} from "./Cards/Cards";
+import {getTableTC} from "../../redux/table-reducer";
+import {useNavigate} from "react-router-dom";
 
 export const PackLists = () => {
 
-    // const {email, isAdmin, isAuth} = useSelector<AppRootStateType, any>(state => state.authReducer)
-
+    const {email, isAdmin, isAuth} = useSelector<AppRootStateType, any>(state => state.authReducer)
+    const navigate = useNavigate()
     const dispatch = useDispatch<any>()
 
-    const token = localStorage.getItem("token")
-
     useEffect(() => {
-        dispatch(authMeTC())
+        if (!isAuth)
+        dispatch(authMeTC(navigate))
     }, [])
 
+    useEffect(() => {
+        if (isAuth) {
+            dispatch(getTableTC())
+        }
+    }, [isAuth])
     return (
         <div className={s.packList}>
             <Header/>
-            {
-                token
-                    ? (
-                        <Cards/>
-                    )
-                    : <p>No users to display</p>
-            }
+            <Cards />
         </div>
     )
 }

@@ -18,9 +18,7 @@ export const Cards = () => {
         dispatch(removeTableTC(id))
     }
 
-    useEffect(() => {
-        dispatch(getTableTC())
-    }, [])
+
 
 
     return (

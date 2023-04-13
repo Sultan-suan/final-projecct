@@ -2,10 +2,11 @@ import React from 'react';
 import s from './Registration.module.css';
 import {TextField} from "@mui/material";
 import {NavLink, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
 import {registrationTC} from "../../redux/auth-reducer";
 import {MyButton} from "../../UI/MyButton/MyButton";
+import {AppRootStateType} from "../../redux/store";
 
 const validate = (values: any) => {
     const errors: any = {};
@@ -22,6 +23,7 @@ const validate = (values: any) => {
 
 export const Registration = () => {
     const dispatch = useDispatch<any>()
+    const error = useSelector<AppRootStateType, string>(state => state.authReducer.error)
 
     const navigate = useNavigate()
 
@@ -30,10 +32,8 @@ export const Registration = () => {
             email: '',
             password: '',
             rememberMe: false
-        }, validate,
-        // onSubmit: (values: any) => {
-        //     dispatch(loginTC(values.email, values.password, values.rememberMe, navigate))
-        // },
+        },
+        validate,
         onSubmit: (values: any) => {
             dispatch(registrationTC(values.email, values.password, navigate))
         }
@@ -77,6 +77,7 @@ export const Registration = () => {
                 <MyButton type="submit" className={s.button}>
                     Register now
                 </MyButton>
+                {error && error}
 
                 <NavLink to={"/login"}>Do you have an account?</NavLink>
             </form>
