@@ -3,6 +3,8 @@ import s from './Cards.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
 import {addTableTC, getTableTC, removeTableTC} from "../../../redux/table-reducer";
+import {searchReducer} from "../../../redux/search";
+import Find from "../../../Finder/find";
 
 export const Cards = () => {
 
@@ -21,10 +23,11 @@ export const Cards = () => {
 
 
 
+
     return (
         <div className={s.wrapper}>
             <div className={s.showPacksCards}>
-                Show packs cards
+                <Find />
             </div>
 
             <div className={s.packs}>

@@ -107,3 +107,5 @@ export const removeTableTC = (id: string) => async (dispatch: Dispatch) => {
         console.log('error', e)
     }
 }
+
+
