@@ -1,13 +1,17 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import thunk from 'redux-thunk'
-import {authReducer} from "./Auth-reducer";
+import {authReducer} from "./auth-reducer";
+import {tableReducer} from "./table-reducer";
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    authReducer,
+    tableReducer
 })
 
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(rootReducer, applyMiddleware(thunk)); // для того чтобы писать асинхронный код,
+// таким образом мы очищаем компоненты и не пишем запросы внутри компоненты
+
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
 

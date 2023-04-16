@@ -1,0 +1,60 @@
+.wrapper {
+    width: 1008px;
+    height: 635px;
+    background: #FEFEFF;
+    border-radius: 8px;
+    display: flex;
+}
+
+.showPacksCards {
+    width: 243px;
+    height: 636px;
+    background: #ECECF9;
+    border-radius: 8px 0px 0px 8px;
+}
+
+.packs {
+    width: 765px;
+    height: 635px;
+    background: #FEFEFF;
+    border-radius: 8px;
+    padding: 25px 40px 25px 40px;
+}
+
+.packs h1 {
+    width: 104px;
+    height: 33px;
+    font-size: 22px;
+    color: #2D2E46;
+    margin-bottom: 15px;
+}
+
+.input {
+    Width: 461px;
+    Height: 36px;
+    Opacity: 50%;
+    box-sizing: border-box;
+    background: #ECECF9;
+    border: 1px solid #635D80;
+    border-radius: 2px;
+    margin-bottom: 24px;
+}
+
+.button {
+    Width: 184px;
+    Height: 36px;
+    color: white;
+    background: #21268F;
+    border-radius: 30px;
+    margin-left: 24px;
+}
+
+.cards {
+    Width: 669px;
+    Height: 48px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
