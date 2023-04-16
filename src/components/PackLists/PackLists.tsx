@@ -7,10 +7,12 @@ import {Header} from "./Header/Header";
 import {Cards} from "./Cards/Cards";
 import {getTableTC} from "../../redux/table-reducer";
 import {useNavigate} from "react-router-dom";
+import {SearchParamsType, searchReducer, SearchReducerStateType} from "../../redux/search";
 
 export const PackLists = () => {
 
     const {email, isAdmin, isAuth} = useSelector<AppRootStateType, any>(state => state.authReducer)
+    const searchParams = useSelector<AppRootStateType, SearchParamsType>(state => state.searchReducer)
     const navigate = useNavigate()
     const dispatch = useDispatch<any>()
 
@@ -23,7 +25,7 @@ export const PackLists = () => {
         if (isAuth) {
             dispatch(getTableTC())
         }
-    }, [isAuth])
+    }, [isAuth, searchParams])
     return (
         <div className={s.packList}>
             <Header/>

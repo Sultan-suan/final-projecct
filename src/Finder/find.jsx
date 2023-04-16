@@ -8,7 +8,7 @@ const Find = () => {
     const cardPacks = useSelector(state => state.tableReducer.cardPacks);
 
     useEffect(() => {
-        dispatch(getTableTC());
+        // dispatch(getTableTC());
     }, [dispatch]);
 
     const handleInputChange = e => {

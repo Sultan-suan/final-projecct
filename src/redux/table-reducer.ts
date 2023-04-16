@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {PacksService} from "../api/api";
+import {AppRootStateType} from "./store";
 
 type ActionType = GetTableACType | AddTableACType | RemoveTableACType;
 
@@ -80,9 +81,10 @@ const removeTableAC = (data: RemoveTableACType) => ({
 })
 
 
-export const getTableTC = () => async (dispatch: Dispatch) => {
+export const getTableTC = () => async (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    const state = getState();
     try {
-        const response = await PacksService.getTable()
+        const response = await PacksService.getTable(state.searchReducer)
         dispatch(getTableAC(response.data))
     } catch (e) {
         console.log('error:', e);
@@ -92,8 +94,8 @@ export const getTableTC = () => async (dispatch: Dispatch) => {
 export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
     try {
         const response = await PacksService.addTable(name)
-        const res = await PacksService.getTable()
-        dispatch(getTableAC(res.data))
+        // const res = await PacksService.getTable()
+        // dispatch(getTableAC(res.data))
     } catch (e) {
         console.log('error:', e);
     }

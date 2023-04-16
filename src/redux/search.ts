@@ -3,7 +3,7 @@ type SetSearchParamsACType = {
     payload: SearchParamsType
 }
 
-type SearchParamsType = {
+export type SearchParamsType = {
     packName?: string,
     min?: number,
     max?: number,
@@ -16,23 +16,21 @@ export const setSearchParamsAC = (payload: SearchParamsType): SetSearchParamsACT
     type: 'SET_SEARCH_PARAMS', payload
 })
 
-type SearchReducerStateType = {
+export type SearchReducerStateType = {
     searchParams: SearchParamsType
 }
 
-const initialSearchState: SearchReducerStateType = {
-    searchParams: {}
+const initialSearchState: SearchParamsType = {
+    packName: "Sultan1",
+    min: 0,
+    max: 10
 }
 
-export const searchReducer = (state: SearchReducerStateType = initialSearchState, action: SetSearchParamsACType): SearchReducerStateType => {
+export const searchReducer = (state: SearchParamsType = initialSearchState, action: SetSearchParamsACType): SearchParamsType => {
     switch (action.type) {
         case 'SET_SEARCH_PARAMS':
             return {
                 ...state,
-                searchParams: {
-                    ...state.searchParams,
-                    ...action.payload,
-                },
             };
         default:
             return state;
