@@ -19,8 +19,6 @@ export const Cards = () => {
     }
 
 
-
-
     return (
         <div className={s.wrapper}>
             <div className={s.showPacksCards}>
@@ -39,19 +37,25 @@ export const Cards = () => {
                     <div>Cards</div>
                     {/*<div>Last updated</div>*/}
                     <div>Created by</div>
-                    {/*<div>Actions</div>*/}
+                    <div>Actions</div>
                 </div>
 
                 {Packs
                     ?
                     <div>
-                        {Packs.cardPacks.map((cardPack: any, index: number) => <div
+                        {Packs.cardPacks.map((cardPack: any, index: number) =>
+                            <div
                                 onClick={() => removeTable(cardPack.id)}
-                                className={s.cards} key={index}>
+                                className={s.card}
+                                key={index}
+                            >
                                 <div>{cardPack.name}</div>
                                 <div>{cardPack.cardsCount}</div>
                                 {/*<div>{cardPack.updated}</div>*/}
                                 <div>{cardPack.user_name}</div>
+                                <div>
+                                    <button onClick={() => {}}>delete</button>
+                                </div>
                             </div>
                         )}
                     </div>

@@ -65,7 +65,6 @@ const authMeAC = (email: string, isAdmin: boolean, token: string, isAuth: boolea
     type: 'LOGIN', email, isAdmin, token, isAuth
 })
 
-
 export const registrationTC = (
     email: string,
     password: string,
@@ -101,10 +100,9 @@ export const authMeTC = (navigate: any) => async (dispatch: Dispatch) => {
     try {
         const token = localStorage.getItem("token")
         if (token) {
-            const response = await AuthService.authMe(token)
+            const response = await AuthService.authMe()
             localStorage.setItem("token", response.data.token)
             dispatch(loginAC(response.data.email, response.data.isAdmin, token, true))
-
         }
 
     } catch (e) {

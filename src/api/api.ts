@@ -17,7 +17,7 @@ export class AuthService {
         return await $api.post('auth/login', {email, password, rememberMe})
     }
 
-    static async authMe(token: string) {
+    static async authMe() {
         return await $api.post('auth/me', {})
     }
 

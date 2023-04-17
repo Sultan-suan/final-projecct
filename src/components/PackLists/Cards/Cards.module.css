@@ -56,5 +56,15 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    background: #ECECF9;
+}
+
+.card {
+    Width: 669px;
+    Height: 48px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
