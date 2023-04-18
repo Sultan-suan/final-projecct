@@ -1,12 +1,13 @@
 import {AuthService} from "../api/api";
 import {Dispatch} from "redux";
 
-type StateType = {
+export type StateType = {
     email: string
     error: string,
     isAdmin: boolean;
     isAuth: boolean
     token: string
+    userId: string
 }
 
 type RegistrationACType = {
@@ -20,6 +21,7 @@ type LoginACType = {
     isAdmin: boolean
     isAuth: boolean
     token: string
+    userId: string
 }
 
 type ActionType =
@@ -32,7 +34,8 @@ const initialState = {
     error: '',
     isAdmin: false,
     isAuth: false,
-    token: ''
+    token: '',
+    userId: ''
 }
 
 export const authReducer = (state: StateType = initialState, action: ActionType): StateType => {
@@ -40,7 +43,7 @@ export const authReducer = (state: StateType = initialState, action: ActionType)
         case 'REGISTRATION':
             return {...state, email: action.email};
         case 'LOGIN':
-            return {...state, email: action.email, isAdmin: action.isAdmin, isAuth: action.isAuth};
+            return {...state, email: action.email, isAdmin: action.isAdmin, userId: action.userId, isAuth: action.isAuth};
         case 'SET_ERROR':
             return {...state, error: action.text}
         default:
@@ -57,8 +60,8 @@ const setError = (text: string) => ({
     type: 'SET_ERROR' as const, text
 })
 
-const loginAC = (email: string, isAdmin: boolean, token: string, isAuth: boolean) => ({
-    type: 'LOGIN', email, isAdmin, token, isAuth
+const loginAC = (email: string, isAdmin: boolean, token: string, userId: string, isAuth: boolean) => ({
+    type: 'LOGIN', email, isAdmin, token, userId, isAuth
 })
 
 const authMeAC = (email: string, isAdmin: boolean, token: string, isAuth: boolean) => ({
@@ -87,9 +90,9 @@ export const loginTC = (
     navigate: (path: string) => void
 ) => async (dispatch: Dispatch) => {
     try {
-        const response = await AuthService.login(email, password, rememberMe)
-        localStorage.setItem("token", response.data.token)
-        dispatch(loginAC(response.data.email, response.data.isAdmin, response.data.token, true))
+        const {data} = await AuthService.login(email, password, rememberMe)
+        localStorage.setItem("token", data.token)
+        dispatch(loginAC(data.email, data.isAdmin, data.token, data._id, true))
         navigate('/posts')
     } catch (e: any) {
 
@@ -102,7 +105,7 @@ export const authMeTC = (navigate: any) => async (dispatch: Dispatch) => {
         if (token) {
             const response = await AuthService.authMe()
             localStorage.setItem("token", response.data.token)
-            dispatch(loginAC(response.data.email, response.data.isAdmin, token, true))
+            dispatch(loginAC(response.data.email, response.data.isAdmin, token, response.data._id, true))
         }
 
     } catch (e) {

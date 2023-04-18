@@ -1,16 +1,12 @@
 import {Dispatch} from "redux";
 import {PacksService} from "../api/api";
+import {AppRootStateType} from "./store";
 
-type ActionType = GetTableACType | AddTableACType | RemoveTableACType;
+type ActionType = GetTableACType | RemoveTableACType;
 
 type GetTableACType = {
     type: 'GET_TABLE',
     data: any
-}
-
-type AddTableACType = {
-    type: 'ADD_TABLE',
-    cardPack: CardPacks
 }
 
 type RemoveTableACType = {
@@ -58,8 +54,6 @@ export const tableReducer = (state: StateType = initialState, action: ActionType
     switch (action.type) {
         case 'GET_TABLE':
             return {...state, ...action.data}
-        case 'ADD_TABLE':
-            return {...state, cardPacks: action.cardPack}
         case 'REMOVE_TABLE':
             return {...state, cardPacks: state.cardPacks.map(() => {})}
         default:
@@ -71,21 +65,14 @@ const getTableAC = (data: GetTableACType) => ({
     type: 'GET_TABLE', data: data
 })
 
-const addTableAC = (data: AddTableACType) => ({
-    type: 'ADD_TABLE', data: data
-})
-
-const removeTableAC = (data: RemoveTableACType) => ({
-    type: 'REMOVE_TABLE', data: data
-})
-
-
-export const getTableTC = () => async (dispatch: Dispatch) => {
+export const getTableTC = () => async (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    const state = getState();
     try {
-        const response = await PacksService.getTable()
+        const response = await PacksService.getTable(state.searchReducer)
         dispatch(getTableAC(response.data))
+        console.log(response.data)
     } catch (e) {
-        console.log('error:', e);
+        console.error('error:', e);
     }
 }
 
@@ -95,15 +82,30 @@ export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
         const res = await PacksService.getTable()
         dispatch(getTableAC(res.data))
     } catch (e) {
-        console.log('error:', e);
+        console.error('error:', e);
     }
 }
 
 export const removeTableTC = (id: string) => async (dispatch: Dispatch) => {
     try {
         const response = await PacksService.removeTable(id)
-        dispatch(removeTableAC(response.data))
+        const res = await PacksService.getTable()
+        const token = localStorage.getItem("token")
+        dispatch(getTableAC(res.data))
+        console.log("delete: ", response);
+    } catch (e) {
+        console.error('error', e)
+    }
+}
+
+export const changeTableTC = (id: string, newName: any) => async (dispatch: Dispatch) => {
+    try {
+        const response = await PacksService.changeTable(id, newName)
+        const res = await PacksService.getTable()
+        dispatch(getTableAC(res.data))
     } catch (e) {
         console.log('error', e)
     }
 }
+
+

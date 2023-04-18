@@ -30,9 +30,9 @@
 }
 
 .input {
-    Width: 461px;
-    Height: 36px;
-    Opacity: 50%;
+    width: 461px;
+    height: 36px;
+    opacity: 50%;
     box-sizing: border-box;
     background: #ECECF9;
     border: 1px solid #635D80;
@@ -41,8 +41,8 @@
 }
 
 .button {
-    Width: 184px;
-    Height: 36px;
+    width: 184px;
+    height: 36px;
     color: white;
     background: #21268F;
     border-radius: 30px;
@@ -50,8 +50,8 @@
 }
 
 .cards {
-    Width: 669px;
-    Height: 48px;
+    width: 669px;
+    height: 48px;
     border: 1px solid black;
     display: flex;
     align-items: center;
@@ -59,12 +59,38 @@
     background: #ECECF9;
 }
 
+.cards th {
+    width: 100px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .card {
-    Width: 669px;
-    Height: 48px;
+    width: 669px;
+    height: 48px;
     border: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
+
+.card td {
+    width: 150px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card button {
+    width: 48px;
+    height: 24px;
+    font-weight: 600;
+    border: none;
+    border-radius: 3px;
+    margin-left: 1px;
+}
+
 
