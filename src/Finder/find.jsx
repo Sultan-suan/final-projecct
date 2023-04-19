@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTableTC } from '../redux/table-reducer';
 
 const Find = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -8,7 +7,7 @@ const Find = () => {
     const cardPacks = useSelector(state => state.tableReducer.cardPacks);
 
     useEffect(() => {
-        dispatch(getTableTC());
+        // dispatch(getTableTC());
     }, [dispatch]);
 
     const handleInputChange = e => {
