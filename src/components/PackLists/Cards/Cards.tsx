@@ -9,7 +9,11 @@ import {Modal} from "../../Modal/Modal";
 import {MyButton} from "../../../UI/MyButton/MyButton";
 
 export const Cards = () => {
-    const [modalActive, setModalActive] = useState(false)
+    const [addPackModalActive, setAddPackModalActive] = useState(false)
+    const [deleteModalActive, setDeleteModalActive] = useState(false)
+    const [editModalActive, setEditModalActive] = useState(false)
+    const [value, setValue] = useState('')
+
     const packs = useSelector<AppRootStateType, any>(state => state.tableReducer)
     const {userId} = useSelector<AppRootStateType, StateType>(state => state.authReducer)
 
@@ -17,15 +21,21 @@ export const Cards = () => {
 
     const addNewPack = (name: any) => {
         dispatch(addTableTC(name))
-        setModalActive(false)
+        setAddPackModalActive(false)
     }
 
     const removeTable = (id: string) => {
         dispatch(removeTableTC(id))
+        setDeleteModalActive(false)
     }
 
     const changeTable = (id: string, newName: any) => {
         dispatch(changeTableTC(id, newName))
+        setEditModalActive(false)
+    }
+
+    const onChangeName = (e: any) => {
+        setValue(e.target.value)
     }
 
     console.log("PACKS: ", packs)
@@ -37,16 +47,15 @@ export const Cards = () => {
             <div className={s.packs}>
                 <h1>Packs list</h1>
                 <div>
-                    <input className={s.input} placeholder='  Search'/>
+                    <input className={s.input} placeholder='Search'/>
                     {/*<button onClick={() => addNewPack(prompt())} className={s.button}>Add new pack</button>*/}
-                    <button onClick={() => setModalActive(true)} className={s.button}>Add new pack</button>
-                    <Modal active={modalActive} setActive={setModalActive}>
-                        <h3>
-                            Add new pack
-                        </h3>
+                    <button onClick={() => setAddPackModalActive(true)} className={s.button}>Add new pack</button>
+                    <Modal active={addPackModalActive} setActive={setAddPackModalActive}>
+                        <h3>Add new pack</h3>
+                        <input onChange={onChangeName} type='text' placeholder='Name pack'/>
                         <div>
-                            <MyButton onClick={() => setModalActive(false)}>Cancel</MyButton>
-                            <MyButton onClick={() => addNewPack(prompt())}>Save</MyButton>
+                            <MyButton onClick={() => addNewPack(value)}>Add</MyButton>
+                            <MyButton onClick={() => setAddPackModalActive(false)}>Cancel</MyButton>
                         </div>
                     </Modal>
                 </div>
@@ -72,9 +81,35 @@ export const Cards = () => {
                                 {cardPack.user_id === userId
                                     ?
                                     <div>
-                                        <button onClick={() => removeTable(cardPack._id)} style={{background: '#F1453D', color: '#FFFFFF'}}>Delete</button>
-                                        <button onClick={() => changeTable(cardPack._id, prompt())} style={{background: '#D7D8EF', color: '#21268F'}}>Edit</button>
-                                        <button onClick={() => {}} style={{background: '#D7D8EF', color: '#21268F'}}>Learn</button>
+                                        <button onClick={() => setDeleteModalActive(true)} style={{background: '#F1453D', color: '#FFFFFF'}}>
+                                            Delete
+                                        </button>
+
+                                        <Modal active={deleteModalActive} setActive={setDeleteModalActive}>
+                                            <h3>Do you really want to remove {cardPack.name}?</h3>
+                                            <div>
+                                                <MyButton onClick={() => removeTable(cardPack._id)}>Delete</MyButton>
+                                                <MyButton onClick={() => setDeleteModalActive(false)}>Cancel</MyButton>
+                                            </div>
+                                        </Modal>
+
+
+                                        <button onClick={() => setEditModalActive(true)} style={{background: '#D7D8EF', color: '#21268F'}}>
+                                            Edit
+                                        </button>
+
+                                        <Modal active={editModalActive} setActive={setEditModalActive}>
+                                            <h3>Do you want to edit the name {cardPack.name}?</h3>
+                                            <input onChange={onChangeName} type='text' placeholder='Name pack'/>
+                                            <div>
+                                                <MyButton onClick={() => changeTable(cardPack._id, value)}>Edit</MyButton>
+                                                <MyButton onClick={() => setEditModalActive(false)}>Cancel</MyButton>
+                                            </div>
+                                        </Modal>
+
+                                        <button onClick={() => {}} style={{background: '#D7D8EF', color: '#21268F'}}>
+                                            Learn
+                                        </button>
                                     </div>
                                     : <div></div>
                                 }
