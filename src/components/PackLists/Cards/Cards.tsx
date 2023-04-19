@@ -38,7 +38,12 @@ export const Cards = () => {
         setValue(e.target.value)
     }
 
-    console.log("PACKS: ", packs)
+    const columns = [
+        {id: 1, title: "Name", key: "name"},
+        {id: 2, title: "Cards", key: "cardsCount"},
+        {id: 3, title: "Created by", key: "user_name"},
+        {id: 4, title: "Actions", key: "actions"},
+    ]
     return (
         <div className={s.wrapper}>
             <div className={s.showPacksCards}>
@@ -63,57 +68,48 @@ export const Cards = () => {
                 <table>
                     <thead>
                     <tr className={s.cards}>
-                        <th>Name</th>
-                        <th>Cards</th>
-                        {/*<th>Last updated</th>*/}
-                        <th>Created by</th>
-                        <th>Actions</th>
+                        {columns.map(c => <th>{c.title}</th>)}
                     </tr>
                     </thead>
                     <tbody>
                     {packs.cardPacks.map((cardPack: any, index: number) =>
                         <tr key={index} className={s.card}>
-                            <td>{cardPack.name}</td>
-                            <td>{cardPack.cardsCount}</td>
-                            {/*<td>{cardPack.updated}</td>*/}
-                            <td>{cardPack.user_name}</td>
-                            <td>
-                                {cardPack.user_id === userId
-                                    ?
-                                    <div>
-                                        <button onClick={() => setDeleteModalActive(true)} style={{background: '#F1453D', color: '#FFFFFF'}}>
-                                            Delete
-                                        </button>
+                            {columns.map(c => {
+                                if (c.key === "actions" && cardPack.user_id === userId) {
+                                    return <div>
+                                                <button onClick={() => setDeleteModalActive(true)} style={{background: '#F1453D', color: '#FFFFFF'}}>
+                                                    Delete
+                                                </button>
 
-                                        <Modal active={deleteModalActive} setActive={setDeleteModalActive}>
-                                            <h3>Do you really want to remove {cardPack.name}?</h3>
-                                            <div>
-                                                <MyButton onClick={() => removeTable(cardPack._id)}>Delete</MyButton>
-                                                <MyButton onClick={() => setDeleteModalActive(false)}>Cancel</MyButton>
+                                                <Modal active={deleteModalActive} setActive={setDeleteModalActive}>
+                                                    <h3>Do you really want to remove {cardPack.name}?</h3>
+                                                    <div>
+                                                        <MyButton onClick={() => removeTable(cardPack._id)}>Delete</MyButton>
+                                                        <MyButton onClick={() => setDeleteModalActive(false)}>Cancel</MyButton>
+                                                    </div>
+                                                </Modal>
+
+
+                                                <button onClick={() => setEditModalActive(true)} style={{background: '#D7D8EF', color: '#21268F'}}>
+                                                    Edit
+                                                </button>
+
+                                                <Modal active={editModalActive} setActive={setEditModalActive}>
+                                                    <h3>Do you want to edit the name {cardPack.name}?</h3>
+                                                    <input onChange={onChangeName} type='text' placeholder='Name pack'/>
+                                                    <div>
+                                                        <MyButton onClick={() => changeTable(cardPack._id, value)}>Edit</MyButton>
+                                                        <MyButton onClick={() => setEditModalActive(false)}>Cancel</MyButton>
+                                                    </div>
+                                                </Modal>
+
+                                                <button onClick={() => {}} style={{background: '#D7D8EF', color: '#21268F'}}>
+                                                    Learn
+                                                </button>
                                             </div>
-                                        </Modal>
-
-
-                                        <button onClick={() => setEditModalActive(true)} style={{background: '#D7D8EF', color: '#21268F'}}>
-                                            Edit
-                                        </button>
-
-                                        <Modal active={editModalActive} setActive={setEditModalActive}>
-                                            <h3>Do you want to edit the name {cardPack.name}?</h3>
-                                            <input onChange={onChangeName} type='text' placeholder='Name pack'/>
-                                            <div>
-                                                <MyButton onClick={() => changeTable(cardPack._id, value)}>Edit</MyButton>
-                                                <MyButton onClick={() => setEditModalActive(false)}>Cancel</MyButton>
-                                            </div>
-                                        </Modal>
-
-                                        <button onClick={() => {}} style={{background: '#D7D8EF', color: '#21268F'}}>
-                                            Learn
-                                        </button>
-                                    </div>
-                                    : <div></div>
-                                }
-                            </td>
+                                    }
+                                return <td>{cardPack[c.key]}</td>
+                            })}
                         </tr>
                     )}
                     </tbody>
