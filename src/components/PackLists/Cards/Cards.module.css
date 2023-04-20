@@ -29,17 +29,6 @@
     margin-bottom: 15px;
 }
 
-.input {
-    Width: 461px;
-    Height: 36px;
-    Opacity: 50%;
-    box-sizing: border-box;
-    background: #ECECF9;
-    border: 1px solid #635D80;
-    border-radius: 2px;
-    margin-bottom: 24px;
-}
-
 .button {
     Width: 184px;
     Height: 36px;
