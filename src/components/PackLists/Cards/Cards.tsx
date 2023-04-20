@@ -26,12 +26,14 @@ export const Cards = () => {
 
     return (
         <div className={s.wrapper}>
+            <div className={s.showPacksCards}>
+                <Find />
+            </div>
 
             <div className={s.packs}>
                 <h1>Packs list</h1>
                 <div>
-                    <Find/>
-
+                    <input className={s.input} placeholder='  Search'/>
                     <button onClick={() => addNewPack(prompt())} className={s.button}>Add new pack</button>
                 </div>
 

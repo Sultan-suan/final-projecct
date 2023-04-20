@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTableTC } from '../redux/table-reducer';
-import s from './find.module.css'
 
 const Find = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,7 +19,7 @@ const Find = () => {
 
     return (
         <div>
-            <input className={s.input} type="text" value={searchTerm} onChange={handleInputChange} />
+            <input type="text" value={searchTerm} onChange={handleInputChange} />
             <ul>
                 {filteredCardPacks.map(pack => (
                     <li key={pack._id}>{pack.name}</li>
