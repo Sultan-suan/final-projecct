@@ -79,7 +79,7 @@ export const Registration = () => {
                 </MyButton>
                 {error && error}
 
-                <NavLink to={"/login"}>Do you have an account?</NavLink>
+                <NavLink to={"/"}>Do you have an account?</NavLink>
             </form>
     );
 };

@@ -4,14 +4,7 @@ import {Login} from "../components/Login/Login";
 import {PackLists} from "../components/PackLists/PackLists";
 import {LOGIN_ROUTE, POSTS_ROUTE, REGISTRATION_ROUTE} from "../Utils/Utils";
 
-export const privateRoutes = [
-    {
-        path: POSTS_ROUTE,
-        element: <PackLists/>
-    },
-]
-
-export const publicRoutes = [
+export const routes = [
     {
         path: REGISTRATION_ROUTE,
         element: <Registration/>
@@ -19,6 +12,10 @@ export const publicRoutes = [
     {
         path: LOGIN_ROUTE,
         element: <Login/>
+    },
+    {
+        path: POSTS_ROUTE,
+        element: <PackLists/>
     },
 ]
 
