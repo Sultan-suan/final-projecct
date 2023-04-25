@@ -2,22 +2,27 @@ import {Dispatch} from "redux";
 import {PacksService} from "../api/api";
 import {AppRootStateType} from "./store";
 
-type ActionType = GetTableAType | RemoveTableAType | AddPackAT;
-
-type GetTableAType = {
+type GetTableAT = {
     type: 'GET_TABLE',
-    data: any
+    data: any,
 }
 
-type RemoveTableAType = {
+type RemoveTableAT = {
     type: 'REMOVE_TABLE',
-    id: string
+    id: string,
 }
 
 type AddPackAT = {
     type: "ADD_PACK",
-    newPack: CardPacks
+    newPack: CardPacks,
 }
+
+type ChangePackAT = {
+    type: "CHANGE_PACK",
+    changePack: CardPacks,
+}
+
+type ActionType = GetTableAT | RemoveTableAT | AddPackAT | ChangePackAT;
 
 export type CardPacks = {
     _id: string,
@@ -60,30 +65,30 @@ export const tableReducer = (state: StateType = initialState, action: ActionType
         case 'GET_TABLE':
             return {...state, ...action.data}
         case 'REMOVE_TABLE':
-            return {...state, cardPacks: state.cardPacks.filter((e) => e._id !== action.id)}
+            return {...state, cardPacks: state.cardPacks.filter((pack) => pack._id !== action.id)}
         case "ADD_PACK":
             return {...state, cardPacks: [action.newPack, ...state.cardPacks]}
+        case "CHANGE_PACK":
+            return {...state, cardPacks: state.cardPacks.map((pack) => pack._id === action.changePack._id ? action.changePack : pack)}
         default:
             return state;
     }
 }
 
-const getTableAC = (data: GetTableAType) => ({type: 'GET_TABLE', data: data})
-const removePackAC = (id: string) => ({type: "REMOVE_TABLE", id})
-const addPackAC = (newPack: CardPacks) => ({type: "ADD_PACK", newPack})
-
+const getTableAC = (data: GetTableAT) => ({type: 'GET_TABLE', data: data});
+const removePackAC = (id: string) => ({type: "REMOVE_TABLE", id});
+const addPackAC = (newPack: CardPacks) => ({type: "ADD_PACK", newPack});
+const changePackAC = (changePack: CardPacks) => ({type: "CHANGE_PACK", changePack});
 
 export const getTableTC = () => async (dispatch: Dispatch, getState: () => AppRootStateType) => {
     const state = getState();
     try {
         const response = await PacksService.getTable(state.searchReducer)
         dispatch(getTableAC(response.data))
-        console.log(response.data)
     } catch (e) {
         console.error('error:', e);
     }
 }
-
 export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
     try {
         const response = await PacksService.addTable(name)
@@ -92,22 +97,18 @@ export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
         console.error('error:', e);
     }
 }
-
 export const removePackTC = (id: string) => async (dispatch: Dispatch) => {
     try {
         const response = await PacksService.removeTable(id)
         dispatch(removePackAC(id))
-        console.log("delete: ", response);
     } catch (e) {
         console.error('error', e)
     }
 }
-
-export const changeTableTC = (id: string, newName: any) => async (dispatch: Dispatch) => {
+export const changeTableTC = (id: string, newName: string) => async (dispatch: Dispatch) => {
     try {
         const response = await PacksService.changeTable(id, newName)
-        const res = await PacksService.getTable()
-        dispatch(getTableAC(res.data))
+        dispatch(changePackAC(response.data.updatedCardsPack))
     } catch (e) {
         console.log('error', e)
     }

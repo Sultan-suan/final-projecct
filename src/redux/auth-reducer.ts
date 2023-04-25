@@ -10,12 +10,12 @@ export type StateType = {
     userId: string
 }
 
-type RegistrationACType = {
+type RegistrationAT = {
     type: 'REGISTRATION';
     email: string;
 }
 
-type LoginACType = {
+type LoginAT = {
     type: 'LOGIN';
     email: string;
     isAdmin: boolean
@@ -24,10 +24,7 @@ type LoginACType = {
     userId: string
 }
 
-type ActionType =
-    | RegistrationACType
-    | LoginACType
-    | ReturnType<typeof setError>
+type ActionType = | RegistrationAT | LoginAT | ReturnType<typeof setError>
 
 const initialState = {
     email: '',
@@ -52,9 +49,7 @@ export const authReducer = (state: StateType = initialState, action: ActionType)
 }
 
 
-const registrationAC = (email: string) => ({
-    type: 'REGISTRATION', email
-})
+const registrationAC = (email: string) => ({type: 'REGISTRATION', email})
 
 const setError = (text: string) => ({
     type: 'SET_ERROR' as const, text
@@ -71,8 +66,7 @@ const authMeAC = (email: string, isAdmin: boolean, token: string, isAuth: boolea
 export const registrationTC = (
     email: string,
     password: string,
-    navigate: (path: string) => void
-) => async (dispatch: Dispatch) => {
+    navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
         const {data} = await AuthService.registration(email, password)
         dispatch(registrationAC(data.email))
@@ -87,15 +81,14 @@ export const loginTC = (
     email: string,
     password: string,
     rememberMe: boolean,
-    navigate: (path: string) => void
-) => async (dispatch: Dispatch) => {
+    navigate: (path: string) => void) => async (dispatch: Dispatch) => {
     try {
         const {data} = await AuthService.login(email, password, rememberMe)
         localStorage.setItem("token", data.token)
         dispatch(loginAC(data.email, data.isAdmin, data.token, data._id, true))
         navigate('/posts')
     } catch (e: any) {
-
+        console.log(e)
     }
 }
 
