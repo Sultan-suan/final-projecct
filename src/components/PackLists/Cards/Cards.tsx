@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import s from './Cards.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
-import {addTableTC, CardPacks, changeTableTC, removeTableTC} from "../../../redux/table-reducer";
+import {addTableTC, CardPacks, changeTableTC, removePackTC} from "../../../redux/table-reducer";
 import {StateType} from "../../../redux/auth-reducer";
 import {Modal} from "../../Modal/Modal";
 import {MyButton} from "../../../UI/MyButton/MyButton";
@@ -28,7 +28,7 @@ export const Cards = () => {
     }
 
     const removeTable = (id: string) => {
-        dispatch(removeTableTC(id))
+        dispatch(removePackTC(id))
         setDeleteItem(null)
     }
 
