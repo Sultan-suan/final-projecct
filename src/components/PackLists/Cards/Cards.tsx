@@ -3,23 +3,26 @@ import s from './Cards.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
 import {addTableTC, CardPacks, changeTableTC, removeTableTC} from "../../../redux/table-reducer";
-import Find from "../../../Finder/find";
 import {StateType} from "../../../redux/auth-reducer";
 import {Modal} from "../../Modal/Modal";
 import {MyButton} from "../../../UI/MyButton/MyButton";
+import {TableColumns} from "../TableColumns/TableColumns";
 
 export const Cards = () => {
     const [addPackModalActive, setAddPackModalActive] = useState(false)
     const [deleteItem, setDeleteItem] = useState<CardPacks | null>(null)
     const [editItem, setEditItem] = useState<CardPacks | null>(null)
     const [value, setValue] = useState('')
+    const [search, setSearch] = useState('')
 
-    const packs = useSelector<AppRootStateType, any>(state => state.tableReducer)
+    const {cardPacks} = useSelector<AppRootStateType, any>(state => state.tableReducer)
     const {userId} = useSelector<AppRootStateType, StateType>(state => state.authReducer)
+
+    console.log("CARDS: ", cardPacks)
 
     const dispatch = useDispatch<any>()
 
-    const addNewPack = (name: any) => {
+    const addNewPack = (name: string) => {
         dispatch(addTableTC(name))
         setAddPackModalActive(false)
     }
@@ -29,12 +32,12 @@ export const Cards = () => {
         setDeleteItem(null)
     }
 
-    const changeTable = (id: string, newName: any) => {
+    const changeTable = (id: string, newName: string) => {
         dispatch(changeTableTC(id, newName))
         setEditItem(null)
     }
 
-    const onChangeName = (e: any) => {
+    const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
     }
 
@@ -45,15 +48,23 @@ export const Cards = () => {
         {id: 4, title: "Actions", key: "actions"},
     ]
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+        console.log(search)
+    }
+
+    const filteredPacks = cardPacks.filter((pack: CardPacks) => pack.name.toLowerCase().includes(search.toLowerCase()))
+
     return (
         <div className={s.wrapper}>
             <div className={s.showPacksCards}>
-                <Find/>
+                Show Packs Cards
             </div>
+
             <div className={s.packs}>
                 <h1>Packs list</h1>
                 <div>
-                    <input className={s.input} placeholder='Search'/>
+                    <input className={s.input} type='text' value={search} onChange={handleInputChange}/>
                     <button onClick={() => setAddPackModalActive(true)} className={s.button}>Add new pack</button>
                     <Modal active={addPackModalActive} setActive={setAddPackModalActive}>
                         <h3>Add new pack</h3>
@@ -76,7 +87,6 @@ export const Cards = () => {
                         </>
                     }
                 </Modal>
-
                 <Modal active={!!editItem}>
                     {editItem &&
                         <>
@@ -91,42 +101,25 @@ export const Cards = () => {
                     }
                 </Modal>
 
-
                 <table>
                     <thead>
                     <tr className={s.cards}>
                         {columns.map(c => <th>{c.title}</th>)}
                     </tr>
                     </thead>
-
                     <tbody>
-                    {packs.cardPacks.map((cardPack: any, index: number) =>
-                        <tr key={index} className={s.card}>
-
-                            {columns.map(c => {
-                                if (c.key === "actions" && cardPack.user_id === userId) {
-                                    return <div>
-                                        <button onClick={() => setDeleteItem(cardPack)}
-                                                style={{background: '#F1453D', color: '#FFFFFF'}}>
-                                            Delete
-                                        </button>
-
-                                        <button onClick={() => setEditItem(cardPack)}
-                                                style={{background: '#D7D8EF', color: '#21268F'}}>
-                                            Edit
-                                        </button>
-
-                                        <button onClick={() => {
-                                        }} style={{background: '#D7D8EF', color: '#21268F'}}>
-                                            Learn
-                                        </button>
-                                    </div>
-                                }
-                                return <td>{cardPack[c.key]}</td>
-                            })}
-
-                        </tr>
-                    )}
+                    {!search
+                        ? <TableColumns cardPacks={cardPacks}
+                                        columns={columns}
+                                        userId={userId}
+                                        setDeleteItem={setDeleteItem}
+                                        setEditItem={setEditItem}/>
+                        : <TableColumns cardPacks={filteredPacks}
+                                        columns={columns}
+                                        userId={userId}
+                                        setDeleteItem={setDeleteItem}
+                                        setEditItem={setEditItem}/>
+                    }
                     </tbody>
                 </table>
             </div>

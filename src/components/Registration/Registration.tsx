@@ -8,7 +8,13 @@ import {registrationTC} from "../../redux/auth-reducer";
 import {MyButton} from "../../UI/MyButton/MyButton";
 import {AppRootStateType} from "../../redux/store";
 
-const validate = (values: any) => {
+export type ValidateType = {
+    email: string;
+    password: string;
+    rememberMe: boolean
+}
+
+const validate = (values: ValidateType) => {
     const errors: any = {};
 
     if (!values.email) {
@@ -34,7 +40,7 @@ export const Registration = () => {
             rememberMe: false
         },
         validate,
-        onSubmit: (values: any) => {
+        onSubmit: (values: ValidateType) => {
             dispatch(registrationTC(values.email, values.password, navigate))
         }
     });

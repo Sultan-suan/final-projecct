@@ -4,17 +4,13 @@ type SetSearchParamsACType = {
 }
 
 export type SearchParamsType = {
-    packName?: string,
-    min?: number,
-    max?: number,
+    packName: string,
+    min: number,
+    max: number,
     sortPacks?: string,
     page?: number,
     pageCount?: number,
 }
-
-export const setSearchParamsAC = (payload: SearchParamsType): SetSearchParamsACType => ({
-    type: 'SET_SEARCH_PARAMS', payload
-})
 
 export type SearchReducerStateType = {
     searchParams: SearchParamsType
