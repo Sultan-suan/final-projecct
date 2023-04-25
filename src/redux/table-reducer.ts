@@ -14,7 +14,7 @@ type RemoveTableACType = {
     data: any
 }
 
-type CardPacks = {
+export type CardPacks = {
     _id: string,
     user_id: string,
     name: string,

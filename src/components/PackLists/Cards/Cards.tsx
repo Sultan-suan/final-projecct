@@ -2,39 +2,42 @@ import React, {useState} from 'react';
 import s from './Cards.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
-import {addTableTC, changeTableTC, removeTableTC} from "../../../redux/table-reducer";
-import Find from "../../../Finder/find";
+import {addTableTC, CardPacks, changeTableTC, removeTableTC} from "../../../redux/table-reducer";
 import {StateType} from "../../../redux/auth-reducer";
 import {Modal} from "../../Modal/Modal";
 import {MyButton} from "../../../UI/MyButton/MyButton";
+import {TableColumns} from "../TableColumns/TableColumns";
 
 export const Cards = () => {
     const [addPackModalActive, setAddPackModalActive] = useState(false)
-    const [deleteModalActive, setDeleteModalActive] = useState(false)
-    const [editModalActive, setEditModalActive] = useState(false)
+    const [deleteItem, setDeleteItem] = useState<CardPacks | null>(null)
+    const [editItem, setEditItem] = useState<CardPacks | null>(null)
     const [value, setValue] = useState('')
+    const [search, setSearch] = useState('')
 
-    const packs = useSelector<AppRootStateType, any>(state => state.tableReducer)
+    const {cardPacks} = useSelector<AppRootStateType, any>(state => state.tableReducer)
     const {userId} = useSelector<AppRootStateType, StateType>(state => state.authReducer)
+
+    console.log("CARDS: ", cardPacks)
 
     const dispatch = useDispatch<any>()
 
-    const addNewPack = (name: any) => {
+    const addNewPack = (name: string) => {
         dispatch(addTableTC(name))
         setAddPackModalActive(false)
     }
 
     const removeTable = (id: string) => {
         dispatch(removeTableTC(id))
-        setDeleteModalActive(false)
+        setDeleteItem(null)
     }
 
-    const changeTable = (id: string, newName: any) => {
+    const changeTable = (id: string, newName: string) => {
         dispatch(changeTableTC(id, newName))
-        setEditModalActive(false)
+        setEditItem(null)
     }
 
-    const onChangeName = (e: any) => {
+    const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
     }
 
@@ -44,16 +47,24 @@ export const Cards = () => {
         {id: 3, title: "Created by", key: "user_name"},
         {id: 4, title: "Actions", key: "actions"},
     ]
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+        console.log(search)
+    }
+
+    const filteredPacks = cardPacks.filter((pack: CardPacks) => pack.name.toLowerCase().includes(search.toLowerCase()))
+
     return (
         <div className={s.wrapper}>
             <div className={s.showPacksCards}>
-                <Find/>
+                Show Packs Cards
             </div>
+
             <div className={s.packs}>
                 <h1>Packs list</h1>
                 <div>
-                    <input className={s.input} placeholder='Search'/>
-                    {/*<button onClick={() => addNewPack(prompt())} className={s.button}>Add new pack</button>*/}
+                    <input className={s.input} type='text' value={search} onChange={handleInputChange}/>
                     <button onClick={() => setAddPackModalActive(true)} className={s.button}>Add new pack</button>
                     <Modal active={addPackModalActive} setActive={setAddPackModalActive}>
                         <h3>Add new pack</h3>
@@ -65,6 +76,31 @@ export const Cards = () => {
                     </Modal>
                 </div>
 
+                <Modal active={!!deleteItem}>
+                    {deleteItem &&
+                        <>
+                            <h3>Do you really want to remove {deleteItem.name}?</h3>
+                            <div>
+                                <MyButton onClick={() => removeTable(deleteItem._id)}>Delete</MyButton>
+                                <MyButton onClick={() => setDeleteItem(null)}>Cancel</MyButton>
+                            </div>
+                        </>
+                    }
+                </Modal>
+                <Modal active={!!editItem}>
+                    {editItem &&
+                        <>
+                            <h3>Do you want to edit the name {editItem.name}?</h3>
+                            <input onChange={onChangeName} type='text' placeholder='Name pack'/>
+                            <div>
+                                <MyButton
+                                    onClick={() => changeTable(editItem._id, value)}>Edit</MyButton>
+                                <MyButton onClick={() => setEditItem(null)}>Cancel</MyButton>
+                            </div>
+                        </>
+                    }
+                </Modal>
+
                 <table>
                     <thead>
                     <tr className={s.cards}>
@@ -72,51 +108,21 @@ export const Cards = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {packs.cardPacks.map((cardPack: any, index: number) =>
-                        <tr key={index} className={s.card}>
-                            {columns.map(c => {
-                                if (c.key === "actions" && cardPack.user_id === userId) {
-                                    return <div>
-                                                <button onClick={() => setDeleteModalActive(true)} style={{background: '#F1453D', color: '#FFFFFF'}}>
-                                                    Delete
-                                                </button>
-
-                                                <Modal active={deleteModalActive} setActive={setDeleteModalActive}>
-                                                    <h3>Do you really want to remove {cardPack.name}?</h3>
-                                                    <div>
-                                                        <MyButton onClick={() => removeTable(cardPack._id)}>Delete</MyButton>
-                                                        <MyButton onClick={() => setDeleteModalActive(false)}>Cancel</MyButton>
-                                                    </div>
-                                                </Modal>
-
-
-                                                <button onClick={() => setEditModalActive(true)} style={{background: '#D7D8EF', color: '#21268F'}}>
-                                                    Edit
-                                                </button>
-
-                                                <Modal active={editModalActive} setActive={setEditModalActive}>
-                                                    <h3>Do you want to edit the name {cardPack.name}?</h3>
-                                                    <input onChange={onChangeName} type='text' placeholder='Name pack'/>
-                                                    <div>
-                                                        <MyButton onClick={() => changeTable(cardPack._id, value)}>Edit</MyButton>
-                                                        <MyButton onClick={() => setEditModalActive(false)}>Cancel</MyButton>
-                                                    </div>
-                                                </Modal>
-
-                                                <button onClick={() => {}} style={{background: '#D7D8EF', color: '#21268F'}}>
-                                                    Learn
-                                                </button>
-                                            </div>
-                                    }
-                                return <td>{cardPack[c.key]}</td>
-                            })}
-                        </tr>
-                    )}
+                    {!search
+                        ? <TableColumns cardPacks={cardPacks}
+                                        columns={columns}
+                                        userId={userId}
+                                        setDeleteItem={setDeleteItem}
+                                        setEditItem={setEditItem}/>
+                        : <TableColumns cardPacks={filteredPacks}
+                                        columns={columns}
+                                        userId={userId}
+                                        setDeleteItem={setDeleteItem}
+                                        setEditItem={setEditItem}/>
+                    }
                     </tbody>
                 </table>
             </div>
-
-
         </div>
     );
 };

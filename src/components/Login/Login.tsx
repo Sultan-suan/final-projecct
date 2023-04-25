@@ -1,13 +1,14 @@
 import React from 'react';
 import s from './Login.module.css';
 import {NavLink, useNavigate} from "react-router-dom";
-import {Checkbox, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {loginTC} from "../../redux/auth-reducer";
 import {useFormik} from "formik";
 import {MyButton} from "../../UI/MyButton/MyButton";
+import {ValidateType} from "../Registration/Registration";
 
-const validate = (values: any) => {
+const validate = (values: ValidateType) => {
     const errors: any = {};
     if (!values.email) errors.email = 'Required';
     if (!values.password) errors.password = 'Required';
@@ -25,7 +26,7 @@ export const Login = () => {
             password: '',
             rememberMe: false
         }, validate,
-        onSubmit: (values: any) => {
+        onSubmit: (values: ValidateType) => {
             dispatch(loginTC(values.email, values.password, values.rememberMe, navigate))
         },
     });
@@ -78,7 +79,9 @@ export const Login = () => {
                 Sign in
             </MyButton>
 
-            <NavLink to={"/registration"}>Don't have an account?</NavLink>
+            <NavLink to={"/registration"}>
+                Don't have an account?
+            </NavLink>
 
         </form>
     );
