@@ -18,8 +18,6 @@ export const Cards = () => {
     const {cardPacks} = useSelector<AppRootStateType, any>(state => state.tableReducer)
     const {userId} = useSelector<AppRootStateType, StateType>(state => state.authReducer)
 
-    console.log("CARDS: ", cardPacks)
-
     const dispatch = useDispatch<any>()
 
     const addNewPack = (name: string) => {
