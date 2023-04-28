@@ -17,20 +17,19 @@ export const PackLists = () => {
 
     useEffect(() => {
         if (!isAuth)
-        dispatch(authMeTC(navigate))
+            dispatch(authMeTC(navigate))
     }, [])
 
     useEffect(() => {
         if (isAuth) {
             dispatch(getTableTC())
         }
-        const token = localStorage.getItem("token")
     }, [isAuth, searchParams])
 
     return (
         <div className={s.packList}>
             <Header/>
-            <Cards />
+            <Cards/>
         </div>
     )
 }

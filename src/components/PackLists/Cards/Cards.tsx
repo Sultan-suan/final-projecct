@@ -1,24 +1,23 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './Cards.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
-import {addTableTC, CardPacks, changeTableTC, removePackTC} from "../../../redux/table-reducer";
+import {addTableTC, CardPacks, changeTableTC, removePackTC, setLoadingAC} from "../../../redux/table-reducer";
 import {StateType} from "../../../redux/auth-reducer";
 import {Modal} from "../../Modal/Modal";
 import {MyButton} from "../../../UI/MyButton/MyButton";
 import {TableColumns} from "../TableColumns/TableColumns";
+import {Loader} from "../../Loader/Loader";
 
 export const Cards = () => {
     const [addPackModalActive, setAddPackModalActive] = useState(false)
     const [deleteItem, setDeleteItem] = useState<CardPacks | null>(null)
     const [editItem, setEditItem] = useState<CardPacks | null>(null)
-    const [value, setValue] = useState('')
-    const [search, setSearch] = useState('')
+    const [value, setValue] = useState<string>('')
+    const [search, setSearch] = useState<string>('')
 
-    const {cardPacks} = useSelector<AppRootStateType, any>(state => state.tableReducer)
+    const {cardPacks, loading} = useSelector<AppRootStateType, any>(state => state.tableReducer)
     const {userId} = useSelector<AppRootStateType, StateType>(state => state.authReducer)
-
-    console.log("CARDS: ", cardPacks)
 
     const dispatch = useDispatch<any>()
 
@@ -50,11 +49,9 @@ export const Cards = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
-        console.log(search)
     }
 
     const filteredPacks = cardPacks.filter((pack: CardPacks) => pack.name.toLowerCase().includes(search.toLowerCase()))
-
     return (
         <div className={s.wrapper}>
             <div className={s.showPacksCards}>
@@ -64,7 +61,7 @@ export const Cards = () => {
             <div className={s.packs}>
                 <h1>Packs list</h1>
                 <div>
-                    <input className={s.input} type='text' value={search} onChange={handleInputChange}/>
+                    <input className={s.input} type='text' placeholder="Search..." value={search} onChange={handleInputChange}/>
                     <button onClick={() => setAddPackModalActive(true)} className={s.button}>Add new pack</button>
                     <Modal active={addPackModalActive} setActive={setAddPackModalActive}>
                         <h3>Add new pack</h3>
@@ -104,21 +101,25 @@ export const Cards = () => {
                 <table>
                     <thead>
                     <tr className={s.cards}>
-                        {columns.map(c => <th>{c.title}</th>)}
+                        {columns.map((c, index) => <th key={index}>{c.title}</th>)}
                     </tr>
                     </thead>
                     <tbody>
                     {!search
-                        ? <TableColumns cardPacks={cardPacks}
+                        ? loading
+                            ? <Loader/>
+                            : <TableColumns cardPacks={cardPacks}
                                         columns={columns}
                                         userId={userId}
                                         setDeleteItem={setDeleteItem}
-                                        setEditItem={setEditItem}/>
+                                        setEditItem={setEditItem}
+                        />
                         : <TableColumns cardPacks={filteredPacks}
                                         columns={columns}
                                         userId={userId}
                                         setDeleteItem={setDeleteItem}
-                                        setEditItem={setEditItem}/>
+                                        setEditItem={setEditItem}
+                        />
                     }
                     </tbody>
                 </table>

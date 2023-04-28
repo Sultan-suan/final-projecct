@@ -22,7 +22,12 @@ type ChangePackAT = {
     changePack: CardPacks,
 }
 
-type ActionType = GetTableAT | RemoveTableAT | AddPackAT | ChangePackAT;
+type SetLoadingAT = {
+    type: "SET_LOADING",
+    loading: boolean
+}
+
+type ActionType = GetTableAT | RemoveTableAT | AddPackAT | ChangePackAT | SetLoadingAT;
 
 export type CardPacks = {
     _id: string,
@@ -40,6 +45,7 @@ type StateType = {
     minCardsCount: number,
     page: number,
     pageCount: number,
+    loading: boolean
 }
 
 const initialState = {
@@ -58,6 +64,7 @@ const initialState = {
     minCardsCount: 0,
     page: 0, // выбранная страница
     pageCount: 0, // количество элементов на странице
+    loading: false
 }
 
 export const tableReducer = (state: StateType = initialState, action: ActionType): StateType => {
@@ -70,6 +77,8 @@ export const tableReducer = (state: StateType = initialState, action: ActionType
             return {...state, cardPacks: [action.newPack, ...state.cardPacks]}
         case "CHANGE_PACK":
             return {...state, cardPacks: state.cardPacks.map((pack) => pack._id === action.changePack._id ? action.changePack : pack)}
+        case "SET_LOADING":
+            return {...state, loading: action.loading}
         default:
             return state;
     }
@@ -79,38 +88,51 @@ const getTableAC = (data: GetTableAT) => ({type: 'GET_TABLE', data: data});
 const removePackAC = (id: string) => ({type: "REMOVE_TABLE", id});
 const addPackAC = (newPack: CardPacks) => ({type: "ADD_PACK", newPack});
 const changePackAC = (changePack: CardPacks) => ({type: "CHANGE_PACK", changePack});
+export const setLoadingAC = (loading: boolean) => ({type: "SET_LOADING", loading})
 
 export const getTableTC = () => async (dispatch: Dispatch, getState: () => AppRootStateType) => {
     const state = getState();
     try {
+        dispatch(setLoadingAC(true))
         const response = await PacksService.getTable(state.searchReducer)
         dispatch(getTableAC(response.data))
     } catch (e) {
         console.error('error:', e);
+    } finally {
+        dispatch(setLoadingAC(false))
     }
 }
 export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
     try {
+        dispatch(setLoadingAC(true))
         const response = await PacksService.addTable(name)
         dispatch(addPackAC(response.data.newCardsPack))
     } catch (e) {
         console.error('error:', e);
+    } finally {
+        dispatch(setLoadingAC(false))
     }
 }
 export const removePackTC = (id: string) => async (dispatch: Dispatch) => {
     try {
+        dispatch(setLoadingAC(true))
         const response = await PacksService.removeTable(id)
         dispatch(removePackAC(id))
     } catch (e) {
         console.error('error', e)
+    } finally {
+        dispatch(setLoadingAC(false))
     }
 }
 export const changeTableTC = (id: string, newName: string) => async (dispatch: Dispatch) => {
     try {
+        dispatch(setLoadingAC(true))
         const response = await PacksService.changeTable(id, newName)
         dispatch(changePackAC(response.data.updatedCardsPack))
     } catch (e) {
         console.log('error', e)
+    } finally {
+        dispatch(setLoadingAC(false))
     }
 }
 
