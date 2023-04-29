@@ -10,7 +10,7 @@ import {TableColumns} from "../TableColumns/TableColumns";
 import {Loader} from "../../Loader/Loader";
 
 export const Cards = () => {
-    const [addPackModalActive, setAddPackModalActive] = useState(false)
+    const [addPackModalActive, setAddPackModalActive] = useState<boolean>(false)
     const [deleteItem, setDeleteItem] = useState<CardPacks | null>(null)
     const [editItem, setEditItem] = useState<CardPacks | null>(null)
     const [value, setValue] = useState<string>('')
@@ -23,6 +23,7 @@ export const Cards = () => {
 
     const addNewPack = (name: string) => {
         dispatch(addTableTC(name))
+        setValue('')  // очистить инпут после добавления
         setAddPackModalActive(false)
     }
 
@@ -45,13 +46,23 @@ export const Cards = () => {
         {id: 2, title: "Cards", key: "cardsCount"},
         {id: 3, title: "Created by", key: "user_name"},
         {id: 4, title: "Actions", key: "actions"},
+        // {id: 5, title: "Created by", key: "created"},
     ]
 
+    console.log(cardPacks)
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
     }
 
     const filteredPacks = cardPacks.filter((pack: CardPacks) => pack.name.toLowerCase().includes(search.toLowerCase()))
+
+    const setEdit = (item: CardPacks | null) => {
+        setEditItem(item)
+        if (item) {
+            setValue(item.name)
+        }
+    }
+
     return (
         <div className={s.wrapper}>
             <div className={s.showPacksCards}>
@@ -61,11 +72,12 @@ export const Cards = () => {
             <div className={s.packs}>
                 <h1>Packs list</h1>
                 <div>
-                    <input className={s.input} type='text' placeholder="Search..." value={search} onChange={handleInputChange}/>
+                    <input className={s.input} type='text' placeholder="Search..." value={search}
+                           onChange={handleInputChange}/>
                     <button onClick={() => setAddPackModalActive(true)} className={s.button}>Add new pack</button>
                     <Modal active={addPackModalActive} setActive={setAddPackModalActive}>
                         <h3>Add new pack</h3>
-                        <input onChange={onChangeName} type='text' placeholder='Name pack'/>
+                        <input value={value} onChange={onChangeName} type='text' placeholder='Name pack'/>
                         <div>
                             <MyButton onClick={() => addNewPack(value)}>Add</MyButton>
                             <MyButton onClick={() => setAddPackModalActive(false)}>Cancel</MyButton>
@@ -84,15 +96,21 @@ export const Cards = () => {
                         </>
                     }
                 </Modal>
+
                 <Modal active={!!editItem}>
                     {editItem &&
                         <>
                             <h3>Do you want to edit the name {editItem.name}?</h3>
-                            <input onChange={onChangeName} type='text' placeholder='Name pack'/>
+                            <input value={value} onChange={onChangeName} type='text' placeholder='Name pack'/>
                             <div>
-                                <MyButton
-                                    onClick={() => changeTable(editItem._id, value)}>Edit</MyButton>
-                                <MyButton onClick={() => setEditItem(null)}>Cancel</MyButton>
+                                <MyButton onClick={() => {
+                                    changeTable(editItem._id, value)
+                                    setValue('')
+                                }}>Edit</MyButton>
+                                <MyButton onClick={() => {
+                                    setEditItem(null)
+                                    setValue('')
+                                }}>Cancel</MyButton>
                             </div>
                         </>
                     }
@@ -109,11 +127,11 @@ export const Cards = () => {
                         ? loading
                             ? <Loader/>
                             : <TableColumns cardPacks={cardPacks}
-                                        columns={columns}
-                                        userId={userId}
-                                        setDeleteItem={setDeleteItem}
-                                        setEditItem={setEditItem}
-                        />
+                                            columns={columns}
+                                            userId={userId}
+                                            setDeleteItem={setDeleteItem}
+                                            setEditItem={setEdit}
+                            />
                         : <TableColumns cardPacks={filteredPacks}
                                         columns={columns}
                                         userId={userId}

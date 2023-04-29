@@ -4,8 +4,10 @@ import s from './Loader.module.css'
 
 export const Loader = () => {
     return (
-        <div className={s.loader}>
-            <img src={loader} alt="loading..." />
-        </div>
+        <tr className={s.loader}>
+            <td>
+                <img src={loader} alt="loading..."/>
+            </td>
+        </tr>
     );
 };
