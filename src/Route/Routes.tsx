@@ -2,7 +2,8 @@ import React from "react";
 import {Registration} from "../components/Registration/Registration";
 import {Login} from "../components/Login/Login";
 import {PackLists} from "../components/PackLists/PackLists";
-import {LOGIN_ROUTE, POSTS_ROUTE, REGISTRATION_ROUTE} from "../Utils/Utils";
+import {CARD_ROUTE, CARDS_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../Utils/Utils";
+import {Card} from "../components/PackLists/Cards/Card/Card";
 
 export const routes = [
     {
@@ -14,8 +15,12 @@ export const routes = [
         element: <Login/>
     },
     {
-        path: POSTS_ROUTE,
+        path: CARDS_ROUTE,
         element: <PackLists/>
+    },
+    {
+        path: CARD_ROUTE,
+        element: <Card/>
     },
 ]
 

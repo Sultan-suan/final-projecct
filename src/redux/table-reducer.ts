@@ -38,7 +38,7 @@ export type CardPacks = {
     updated: string,
 }
 
-type StateType = {
+export type TableStateType = {
     cardPacks: CardPacks[],
     cardPacksTotalCount: number,
     maxCardsCount: number,
@@ -67,7 +67,7 @@ const initialState = {
     loading: false
 }
 
-export const tableReducer = (state: StateType = initialState, action: ActionType): StateType => {
+export const tableReducer = (state: TableStateType = initialState, action: ActionType): TableStateType => {
     switch (action.type) {
         case 'GET_TABLE':
             return {...state, ...action.data}
@@ -102,9 +102,11 @@ export const getTableTC = () => async (dispatch: Dispatch, getState: () => AppRo
         dispatch(setLoadingAC(false))
     }
 }
+
 export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoadingAC(true))
+        console.log(setLoadingAC)
         const response = await PacksService.addTable(name)
         dispatch(addPackAC(response.data.newCardsPack))
     } catch (e) {
@@ -113,6 +115,7 @@ export const addTableTC = (name: string) => async (dispatch: Dispatch) => {
         dispatch(setLoadingAC(false))
     }
 }
+
 export const removePackTC = (id: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoadingAC(true))
@@ -124,6 +127,7 @@ export const removePackTC = (id: string) => async (dispatch: Dispatch) => {
         dispatch(setLoadingAC(false))
     }
 }
+
 export const changeTableTC = (id: string, newName: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoadingAC(true))

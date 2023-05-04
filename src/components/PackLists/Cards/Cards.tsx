@@ -2,28 +2,42 @@ import React, {useEffect, useState} from 'react';
 import s from './Cards.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
-import {addTableTC, CardPacks, changeTableTC, removePackTC, setLoadingAC} from "../../../redux/table-reducer";
-import {StateType} from "../../../redux/auth-reducer";
+import {
+    addTableTC,
+    CardPacks,
+    changeTableTC,
+    removePackTC,
+    TableStateType
+} from "../../../redux/table-reducer";
 import {Modal} from "../../Modal/Modal";
 import {MyButton} from "../../../UI/MyButton/MyButton";
 import {TableColumns} from "../TableColumns/TableColumns";
 import {Loader} from "../../Loader/Loader";
+import {AuthStateType} from "../../../redux/auth-reducer";
+
+export type ColumnsType = {
+    id: number;
+    title: string;
+    key: string;
+}
 
 export const Cards = () => {
+    const dispatch = useDispatch<any>()
+
     const [addPackModalActive, setAddPackModalActive] = useState<boolean>(false)
     const [deleteItem, setDeleteItem] = useState<CardPacks | null>(null)
     const [editItem, setEditItem] = useState<CardPacks | null>(null)
     const [value, setValue] = useState<string>('')
     const [search, setSearch] = useState<string>('')
 
-    const {cardPacks, loading} = useSelector<AppRootStateType, any>(state => state.tableReducer)
-    const {userId} = useSelector<AppRootStateType, StateType>(state => state.authReducer)
+    const {cardPacks, loading} = useSelector<AppRootStateType, TableStateType>(state => state.tableReducer)
+    const {userId} = useSelector<AppRootStateType, AuthStateType>(state => state.authReducer)
 
-    const dispatch = useDispatch<any>()
+    const filteredPacks = cardPacks.filter((pack: CardPacks) => pack.name.toLowerCase().includes(search.toLowerCase()))
 
     const addNewPack = (name: string) => {
         dispatch(addTableTC(name))
-        setValue('')  // очистить инпут после добавления
+        setValue('')
         setAddPackModalActive(false)
     }
 
@@ -41,20 +55,9 @@ export const Cards = () => {
         setValue(e.target.value)
     }
 
-    const columns = [
-        {id: 1, title: "Name", key: "name"},
-        {id: 2, title: "Cards", key: "cardsCount"},
-        {id: 3, title: "Created by", key: "user_name"},
-        {id: 4, title: "Actions", key: "actions"},
-        // {id: 5, title: "Created by", key: "created"},
-    ]
-
-    console.log(cardPacks)
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
     }
-
-    const filteredPacks = cardPacks.filter((pack: CardPacks) => pack.name.toLowerCase().includes(search.toLowerCase()))
 
     const setEdit = (item: CardPacks | null) => {
         setEditItem(item)
@@ -62,6 +65,13 @@ export const Cards = () => {
             setValue(item.name)
         }
     }
+
+    const columns: ColumnsType[] = [
+        {id: 1, title: "Name", key: "name"},
+        {id: 2, title: "Cards", key: "cardsCount"},
+        {id: 3, title: "Created by", key: "user_name"},
+        {id: 4, title: "Actions", key: "actions"},
+    ]
 
     return (
         <div className={s.wrapper}>
@@ -75,7 +85,7 @@ export const Cards = () => {
                     <input className={s.input} type='text' placeholder="Search..." value={search}
                            onChange={handleInputChange}/>
                     <button onClick={() => setAddPackModalActive(true)} className={s.button}>Add new pack</button>
-                    <Modal active={addPackModalActive} setActive={setAddPackModalActive}>
+                    <Modal active={addPackModalActive}>
                         <h3>Add new pack</h3>
                         <input value={value} onChange={onChangeName} type='text' placeholder='Name pack'/>
                         <div>
@@ -123,20 +133,14 @@ export const Cards = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {!search
-                        ? loading
-                            ? <Loader/>
-                            : <TableColumns cardPacks={cardPacks}
-                                            columns={columns}
-                                            userId={userId}
-                                            setDeleteItem={setDeleteItem}
-                                            setEditItem={setEdit}
-                            />
-                        : <TableColumns cardPacks={filteredPacks}
-                                        columns={columns}
-                                        userId={userId}
-                                        setDeleteItem={setDeleteItem}
-                                        setEditItem={setEditItem}
+                    {loading
+                        ? <Loader/>
+                        : <TableColumns
+                            cardPacks={filteredPacks ? filteredPacks : cardPacks} // будет ли правильно таак писать?
+                            columns={columns}
+                            userId={userId}
+                            setDeleteItem={setDeleteItem}
+                            setEditItem={setEdit}
                         />
                     }
                     </tbody>

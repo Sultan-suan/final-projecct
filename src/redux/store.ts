@@ -3,11 +3,13 @@ import thunk from 'redux-thunk'
 import {authReducer} from "./auth-reducer";
 import {tableReducer} from "./table-reducer";
 import {searchReducer} from "./search-reducer";
+import {cardReducer} from "./card-reducer";
 
 const rootReducer = combineReducers({
     authReducer: authReducer,
     tableReducer: tableReducer,
-    searchReducer:searchReducer
+    searchReducer: searchReducer,
+    cardReducer: cardReducer,
 })
 
 

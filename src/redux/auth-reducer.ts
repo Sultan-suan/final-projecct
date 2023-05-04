@@ -29,7 +29,7 @@ type SetLoadingAT = {
 
 type ActionType = | RegistrationAT | LoginAT | AuthMeAT | SetLoadingAT | ReturnType<typeof setError>
 
-export type StateType = {
+export type AuthStateType = {
     email: string
     error: string
     isAdmin: boolean
@@ -49,7 +49,7 @@ const initialState = {
     loading: false
 }
 
-export const authReducer = (state: StateType = initialState, action: ActionType): StateType => {
+export const authReducer = (state: AuthStateType = initialState, action: ActionType): AuthStateType => {
     switch (action.type) {
         case 'REGISTRATION':
             return {...state, email: action.email};
@@ -101,7 +101,7 @@ export const loginTC = (
         const {data} = await AuthService.login(email, password, rememberMe)
         localStorage.setItem("token", data.token)
         dispatch(loginAC(data.email, data.token, data._id, true))
-        navigate('/posts')
+        navigate('/cards')
     } catch (e: any) {
         dispatch(setError(e.response.data.error))
     } finally {

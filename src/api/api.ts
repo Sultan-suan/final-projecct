@@ -56,4 +56,23 @@ export class PacksService {
 }
 
 
+export class CardService {
+    static async getCard(cardsPackId?: string) {
+        return await $api.get(`cards/card?cardsPack_id=${cardsPackId}`)
+    }
+
+    static async addCard(question: string, answer: string, cardsPackId?: string) {
+        return await $api.post('cards/card', {card: {cardsPack_id: cardsPackId, question: question, answer: answer}})
+    }
+
+    static async removeCard(cardId: string) {
+        return await $api.delete(`cards/card?id=${cardId}`)
+    }
+
+    static async changeCard(cardId: string, question: string, answer: string) {
+        return await $api.put('cards/card', {card: {_id: cardId, question: question, answer: answer}})
+    }
+}
+
+
 
