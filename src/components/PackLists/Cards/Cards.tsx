@@ -14,6 +14,7 @@ import {MyButton} from "../../../UI/MyButton/MyButton";
 import {TableColumns} from "../TableColumns/TableColumns";
 import {Loader} from "../../Loader/Loader";
 import {AuthStateType} from "../../../redux/auth-reducer";
+import {ShowPackCards} from "./ShowPackCards/ShowPackCards";
 
 export type ColumnsType = {
     id: number;
@@ -75,9 +76,8 @@ export const Cards = () => {
 
     return (
         <div className={s.wrapper}>
-            <div className={s.showPacksCards}>
-                Show Packs Cards
-            </div>
+            <ShowPackCards/>
+
 
             <div className={s.packs}>
                 <h1>Packs list</h1>

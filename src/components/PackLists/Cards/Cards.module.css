@@ -6,13 +6,6 @@
     display: flex;
 }
 
-.showPacksCards {
-    width: 243px;
-    height: 636px;
-    background: #ECECF9;
-    border-radius: 8px 0px 0px 8px;
-}
-
 .packs {
     width: 765px;
     height: 635px;

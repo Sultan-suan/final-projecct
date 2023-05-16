@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/store";
 import {authMeTC, AuthStateType} from "../../redux/auth-reducer";
 import s from './PackLists.module.css'
-import {Header} from "./Header/Header";
+import {Header} from "../Header/Header";
 import {Cards} from "./Cards/Cards";
 import {getTableTC} from "../../redux/table-reducer";
 import {useNavigate} from "react-router-dom";

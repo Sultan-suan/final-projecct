@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../../redux/store";
 import {authMeTC, AuthStateType} from "../../../../redux/auth-reducer";
-import {Header} from "../../Header/Header";
+import {Header} from "../../../Header/Header";
 import {
     addCardTC,
     CardsStateType,
